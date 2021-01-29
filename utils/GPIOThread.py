@@ -29,11 +29,12 @@ class GPIOThread(QThread):
         GPIO.add_event_detect(self.args.input_pin, GPIO_mode, callback=self.callback, bouncetime=self.args.time_delay)
 
         for item in self.item_list:
+
             if item.mode == 1:
-                print("高脉冲触发")
+                print("高脉冲触发"+str(item.pin))
                 GPIO.setup(item.pin, GPIO.OUT, initial=GPIO.LOW)
             else:
-                print("低脉冲触发")
+                print("低脉冲触发"+str(item.pin))
                 GPIO.setup(item.pin, GPIO.OUT, initial=GPIO.HIGH)
 
     def callback(self, input_pin):

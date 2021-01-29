@@ -196,8 +196,8 @@ class DetectTensorRT(QThread):
         :param img:
         :return: None
         """
-        if not self.enable_data_upload:
-            return
+        # if not self.enable_data_upload:
+        #     return
         image_name = current_time + str(random.randint(1000, 9999)) + '.jpg'
         self.inference_box_info = self.inference_box_info._replace(image_name=image_name)
         self.inference_box_info = self.inference_box_info._replace(box_seq="0")
@@ -227,12 +227,13 @@ class DetectTensorRT(QThread):
         :param conf:4
         :return: None4
         """
-        self.history_Signal.emit(history_image, label, current_time)
+        # 这里有个性能妥协
+        #self.history_Signal.emit(history_image, label, current_time)
         self.num_Signal.emit(label)
         self.info_Signal.emit(str(box) + '\t' + str(conf) + '\t' + str(label))
-        if self.enable_save_image and time.time() - self.save_start_time:
+        if self.enable_save_image and time.time() - self.save_start_time > self.args.minimum_storage_interval:
             cv2.imwrite('./image/' + current_time + '.jpg', history_image)
-            self.save_start_time = time.time()
+            self.save_start_time = time.time()    # update last-save-image time
         self.gpio_Signal.emit(self.item_dict[label])
 
     def load_model(self):
@@ -295,32 +296,27 @@ class DetectTensorRT(QThread):
                 conf = modelOutputItem.confidence
                 cls = modelOutputItem.cls
                 if label in self.item_dict.keys():  # 检测出来的标签
+                    # 持续检测模式
                     if self.args.detect_mode == "continuous detect":
+                        # 在此假设检测标签不重复（事实上也是如此），模型输出标签可以重复
                         if self.item_dict[label].allow_alarm(label, conf):
-                            # print(modelOutputItem)
                             history_image = self.vis.draw_bboxes(img, [box], [conf], [cls])
                             current_time = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
-
-                            self.generate_info(current_time, label, box, cls, history_image, img)  # 数据上报
-
+                            if self.enable_data_upload:
+                                self.generate_info(current_time, label, box, cls, history_image, img)  # 数据上报
                             self.output(history_image, label, current_time, box, conf)  # 输出
-
-
+                    # GPIO触发模式
                     else:
-                        # print("self.gpio_flag:", self.gpio_flag)
                         if self.gpio_flag:
-                            # 在此假设检测标签不重复，模型输出标签可以重复
+                            # 在此假设检测标签不重复（事实上也是如此），模型输出标签可以重复
                             if self.item_dict[label].allow_alarm(label, conf):
                                 history_image = self.vis.draw_bboxes(img, [box], [conf], [cls])
                                 current_time = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
-
-                                self.generate_info(current_time, label, box, cls, history_image, img)  # 数据上报
-
+                                if self.enable_data_upload:
+                                    self.generate_info(current_time, label, box, cls, history_image, img)  # 数据上报
                                 self.output(history_image, label, current_time, box, conf)  # 输出
-
                             if time.time() - self.detect_start_time > self.args.detect_time:
                                 self.gpio_flag = False
-                                print("结束检测")
                         else:
                             for item in self.item_list:
                                 item.reset()
