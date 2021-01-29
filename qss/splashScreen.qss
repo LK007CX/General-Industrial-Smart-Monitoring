@@ -1,0 +1,82 @@
+QWidget {
+    font-family: "MicroSoft YaHei";
+}
+#GIMSLabel {
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+}
+#versionLabel {
+    color: white;
+    font-size: 20px;
+    font-weight: normal;
+    border: 2px solid white;
+    border-radius: 5px;
+}
+#fullNameLabel {
+    color: white;
+    font-size: 20px;
+    font-weight: normal;
+}
+#productFeaturesLabel {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration:underline;
+}
+#dotLabel1 {
+    border-radius: 5px;
+    background-color: white;
+}
+#dotLabel2 {
+    border-radius: 5px;
+    background-color: white;
+}
+#dotLabel3 {
+    border-radius: 5px;
+    background-color: white;
+}
+#dotLabel4 {
+    border-radius: 5px;
+    background-color: white;
+}
+#featureLabel1 {
+    color: white;
+    font-size: 15px;
+    font-weight: normal;
+}
+#featureLabel2 {
+    color: white;
+    font-size: 15px;
+    font-weight: normal;
+}
+#featureLabel3 {
+    color: white;
+    font-size: 15px;
+    font-weight: normal;
+}
+#featureLabel4 {
+    color: white;
+    font-size: 15px;
+    font-weight: normal;
+}
+#progressBarStatusLabel {
+    color: white;
+    font-size: 15px;
+    font-weight: normal;
+}
+#copyRightLabel {
+    color: white;
+    font-size: 10px;
+    font-weight: normal;
+}
+#progressBar {
+    border: 1px solid #2196F3;/*边框以及边框颜色*/
+    border-radius: 5px;
+    background-color: #E0E0E0;
+}
+#progressBar::chunk {
+    background-color: #2196F3;
+    width: 10px; /*区块宽度*/
+    margin: 0.5px;
+}

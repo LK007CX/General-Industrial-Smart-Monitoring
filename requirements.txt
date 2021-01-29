@@ -1,0 +1,6 @@
+qdarkstyle~=2.8.1
+opencv-python~=4.4.0.44
+numpy~=1.18.5
+requests~=2.24.0
+pycuda~=2020.1
+tensorrt~=0.0.1

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/icon/back.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icon/cap.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icon/splash.gif" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/qss/mainWindow.qss" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/test/AutoRestart.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ui/Data" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ui/ItemWidget.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/utils/image/back.png" charset="UTF-8" />
+    <file url="PROJECT" charset="GBK" />
+  </component>
+</project>

@@ -1,0 +1,347 @@
+QWidget
+{
+    color: #222222;
+    background-color: white;
+    font-family: "MicroSoft YaHei";
+    font-size: 12px;
+}
+/* =============================================== */
+/* QHeaderView for list table                      */
+/* =============================================== */
+QHeaderWidget {
+	border: none;
+	margin: 0px;
+	padding: 0px;
+	background-color: red;
+}
+QHeaderView::section, QTableCornerButton::section {/*设置表头属性*//*左上角*/
+	background-color: #EEEEEF;
+	padding: 0 3px;
+	border-right: 1px solid #999999;
+	border-bottom: 1px solid #999999;
+	border-radius: 0px;
+}
+
+/* =============================================== */
+/* ScrollBar                                       */
+/* =============================================== */
+/*垂直滚动条*/
+QScrollBar:vertical{
+    width:12px;
+    border:1px solid rgba(0,0,0,50);
+    margin:0px 0px 0px 0px;
+    padding-top:15px;
+    padding-bottom:15px;
+}
+QScrollBar::handle:vertical{
+    width:16px;
+    background: #8ABAE0;
+    min-height:20;
+}
+QScrollBar::handle:vertical:hover{
+    background:#388CCE;
+    border:0px rgba(0,0,0,25%);
+}
+QScrollBar::sub-line:vertical{
+    height:15px;
+
+    subcontrol-position:top;
+}
+QScrollBar::sub-line:vertical:hover{
+    height:15px;
+    background:rgba(0,0,0,25%);
+    subcontrol-position:top;
+}
+QScrollBar::add-line:vertical{
+    height:15px;
+    subcontrol-position:bottom;
+}
+QScrollBar::add-line:vertical:hover{
+    height:15px;
+    background:rgba(0,0,0,25%);
+    subcontrol-position:bottom;
+}
+QScrollBar::add-page:vertical{
+    background:rgb(255,255,255);
+}
+QScrollBar::sub-page:vertical{
+    background:rgb(255,255,255);
+}
+QScrollBar::up-arrow:vertical{
+    border-width:0px;
+    max-height:16px;
+    min-width:17px;
+}
+QScrollBar::down-arrow:vertical{
+    border-style:outset;
+    border-width:0px;
+}
+
+/* ================================================================================================================== */
+/* QTableWidget                                                                                                       */
+/* ================================================================================================================== */
+QTableWidget
+{
+    gridline-color: #F0F0F0;                     /*表格中的网格线条颜色*/
+    background-color: #FAFAFA;
+    alternate-background-color: #E6E6E6;     /*设置交替颜色，需要在函数属性中设置:tableWidget->setAlternatingRowColors(True)*/
+    selection-color: #FFFFFF;                /*鼠标选中时前景色：文字颜色*/
+    selection-background-color: #388CCE;     /*鼠标选中时背景色*/
+    border: 1px solid #999999;               /*边框线的宽度、颜色*/
+    /* border:none; */                       /*去除边界线*/
+    /* border-radius: 5px; */                /*圆角*/
+    /* padding: 10px 10px; */                /* 表格与边框的间距*/
+}
+
+QTableWidget::item
+{
+    text-align: center;
+}
+
+QTableWidget::item:hover
+{
+    background: #388CCE;
+    color: white;
+}
+/*
+QTableWidget::item:selected
+{
+    background: #0008BF;
+    color: #EEEEEE;
+}
+QTableWidget::item:selected:active
+{
+    background: #00059F;
+    color: #EEEEEF;
+}
+*/
+/* ================================================================================================================== */
+/* TabWidget                                       */
+/* ================================================================================================================== */
+QTabWidget{
+    margin-top:10px;
+}
+
+QTabWidget::pane{
+    /*border: 1px solid #014A6F;*/
+}
+
+QTabWidget::tab-bar {
+    left: 0px;     /* 选项卡左侧px*/
+}
+
+QTabBar::tab {
+    background: #40568D;
+    /*border: 1px solid white;*/
+    padding: 3px 5px;
+    color: white;
+}
+
+QTabBar::tab:hover {
+    background: #BBC6F1;
+    color: black;
+    border-color: transparent;
+}
+QTabBar::tab:selected {
+    background: white;
+    color: black;
+}
+
+QTabBar::tab:pressed {
+    background: white;
+    color: black;
+}
+
+QTabBar::tab:focus {
+    border-color: white;
+}
+
+QTabBar::tab:top{
+    margin-top: 0px;
+    border-bottom: transparent;
+    margin-right: 1px;
+}
+
+/*
+QTabBar::tab:bottom{
+    margin-bottom: 3px;
+    border-top: transparent;
+    margin-right: 1px;
+}
+QTabBar::tab:left{
+    border-right: transparent;
+    margin-bottom: 1px;
+}
+QTabBar::tab:right{
+    border-left: transparent;
+    margin-bottom: 1px;
+}
+*/
+
+
+/* ================================================================================================================== */
+/* HeaderWidget                                                                                                       */
+/* ================================================================================================================== */
+HeaderWidget
+{
+    background-color: #014A6F;
+    /*background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1, stop: 0  #A9A9EA, stop: 0.4 #7D7DDF, stop:1 #5050D3);*/
+}
+
+HeaderWidget QWidget
+{
+    background-color: #014A6F;
+}
+HeaderWidget #titleLabel
+{
+    font: italic;
+    color: white;
+    font-size: 30px;
+}
+HeaderWidget #cameraStatusLabel
+{
+    border-radius: 15px;
+    border: 2px solid white;
+    background-color: green;
+}
+HeaderWidget #remoteServerStatusLabel
+{
+    border-radius: 15px;
+    border: 2px solid white;
+    background-color: red;
+}
+HeaderWidget #cameraLabel
+{
+    color: white;
+    font-size: 15px;
+}
+HeaderWidget #remoteServerLabel
+{
+    color: white;
+    font-size: 15px;
+}
+
+HeaderWidget QPushButton {
+    font-size: 15px;
+    color: white;
+    /*border: 1px solid #CCCCCC;*/
+    border: none;
+    border-radius: 2px;
+    padding: 1px 4px;
+    min-width: 60px;
+    min-height: 20px;
+    background-color: #4caf50;
+}
+
+HeaderWidget QPushButton:hover{
+    background-color: #81c784;
+    border-color: rgb(100, 100, 100);
+}
+
+HeaderWidget QPushButton:pressed
+{
+    /*border: 1px solid black;*/
+    background-color: #c8e6c9;
+    color: white;
+}
+/* ================================================================================================================== */
+/* VideoWidget                                                                                                        */
+/* ================================================================================================================== */
+VideoWidget
+{
+    /*background-color: black;*/
+}
+
+VideoWidget QWidget
+{
+    border: 1px solid green;
+    background-color: rgb(45, 45, 45);
+    /*background-color: white;*/
+}
+/* ================================================================================================================== */
+/* ErrorWidget                                                                                                        */
+/* ================================================================================================================== */
+/*
+*
+AlarmWidget
+{
+    background-color: red;
+}
+*
+*/
+/* ================================================================================================================== */
+/* HistoryWidget                                                                                                      */
+/* ================================================================================================================== */
+HistoryWidget QWidget
+{
+    border: 1px solid black;
+    /*background-color: #5D6B99;*/
+}
+HistoryWidget QListView::item
+{
+    color: white;
+}
+HistoryWidget QListView::item:hover
+{
+    color: #3190CB;
+}
+HistoryWidget QListView::item:selected
+{
+    color: #3190CB;
+}
+HistoryWidget QListView::item:pressed
+{
+    color: #3190CB;
+}
+
+
+/* ================================================================================================================== */
+/* SystemSettingsTabWidget                                                                                               */
+/* ================================================================================================================== */
+SystemSettingsTabWidget QWidget
+{
+    font-size: 12px;
+    /*background-color: #CCD5F0;*/
+}
+SystemSettingsTabWidget QPushButton
+{
+    background: #40568D;
+    color: white;
+}
+SystemSettingsTabWidget QPushButton:hover
+{
+    background: #BBC6F1;
+    color: black;
+    border-color: transparent;
+}
+
+SystemSettingsTabWidget QPushButton:selected {
+    background: white;
+    color: black;
+}
+
+SystemSettingsTabWidget QPushButton:pressed {
+    background: white;
+    color: black;
+}
+
+SystemSettingsTabWidget QPushButton:focus {
+    border-color: white;
+}
+/* ================================================================================================================== */
+/* DetectSettingsWidget                                                                                               */
+/* ================================================================================================================== */
+
+DetectSettingsWidget QPushButton:hover
+{
+    background-color: rgb(61, 174, 233);
+}
+DetectSettingsWidget QListWidget::item:hover
+{
+    background:rgb(40, 115, 153);
+}
+DetectSettingsWidget QToolButton
+{
+    background: white;
+    border: none;
+}
