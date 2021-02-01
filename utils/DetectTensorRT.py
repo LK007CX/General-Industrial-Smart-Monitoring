@@ -266,7 +266,7 @@ class DetectTensorRT(QThread):
         self.vis = BBoxVisualization(self.cls_dict)
         # self.status_Signal.emit("模型加载完毕", 80)
 
-    def loop_and_detect(self):
+    def loop_and_detect_(self):
         detect_labels = [item.category for item in self.item_list]  # 所有需要检测的标签
         fps = 0.0
         tic = time.time()
@@ -332,6 +332,72 @@ class DetectTensorRT(QThread):
             fps = curr_fps if fps == 0.0 else (fps * 0.95 + curr_fps * 0.05)
             tic = toc
             time.sleep(0.005)
+
+    def loop_and_detect(self):
+        detect_labels = [item.category for item in self.item_list]  # 所有需要检测的标签
+        fps = 0.0
+        tic = time.time()
+        while True:
+            img = self.cam.read()
+            if img is None:
+                break
+            boxes, confs, clss = self.trt_yolo.detect(img, self.conf_th)  # 模型输出结果
+
+            # 过滤标签
+            if len(boxes) > 0:
+                current_labels = [self.cls_dict[i] for i in clss]  # 当前所有标签，str
+                index = [i for i in range(len(current_labels)) if current_labels[i] in detect_labels]
+                boxes = [list(boxes[i]) for i in index]
+                confs = [confs[i] for i in index]
+                clss = [clss[i] for i in index]
+
+            # 转换为ModelOutputItem
+            model_output_list = [
+                ModelOutputItem(box=boxes[i], confidence=confs[i], cls=clss[i], cls_dict=self.cls_dict)
+                for i in range(len(boxes))]
+
+            # 在此假设检测标签不重复，模型输出标签可以重复
+            for modelOutputItem in model_output_list:
+                label = modelOutputItem.label
+                box = modelOutputItem.box
+                conf = modelOutputItem.confidence
+                cls = modelOutputItem.cls
+                if label in self.item_dict.keys():  # 检测出来的标签
+                    # 持续检测模式
+                    if self.args.detect_mode == "continuous detect":
+                        # 在此假设检测标签不重复（事实上也是如此），模型输出标签可以重复
+                        if self.item_dict[label].allow_alarm(label, conf):
+                            history_image = self.vis.draw_bboxes(img, [box], [conf], [cls])
+                            current_time = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
+                            if self.enable_data_upload:
+                                self.generate_info(current_time, label, box, cls, history_image, img)  # 数据上报
+                            self.output(history_image, label, current_time, box, conf)  # 输出
+                    # GPIO触发模式
+                    else:
+                        if self.gpio_flag:
+                            # 在此假设检测标签不重复（事实上也是如此），模型输出标签可以重复
+                            if self.item_dict[label].allow_alarm(label, conf):
+                                history_image = self.vis.draw_bboxes(img, [box], [conf], [cls])
+                                current_time = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
+                                if self.enable_data_upload:
+                                    self.generate_info(current_time, label, box, cls, history_image, img)  # 数据上报
+                                self.output(history_image, label, current_time, box, conf)  # 输出
+                            if time.time() - self.detect_start_time > self.args.detect_time:
+                                self.gpio_flag = False
+                        else:
+                            for item in self.item_list:
+                                item.reset()
+            img = self.vis.draw_bboxes(img, boxes, confs, clss)
+            img = show_fps(img, fps)
+            self.image_Signal.emit(img)
+            if self.enable_remote_cv:
+                global global_image
+                global_image = copy.deepcopy(img)
+            toc = time.time()
+            curr_fps = 1.0 / (toc - tic)
+            # 计算fps数的指数衰减平均值
+            fps = curr_fps if fps == 0.0 else (fps * 0.95 + curr_fps * 0.05)
+            tic = toc
 
     def run(self):
         try:
