@@ -313,6 +313,7 @@ class MainWindow(QMainWindow):
 
         self.edge_agent_worker = EdgeAgentWorker(self.args)
         self.thread.upload_Signal.connect(self.edge_agent_worker.send)
+        self.edge_agent_worker.remote_server_status_signal.connect(self.headerWidget.changeRemoteServerStatus)
         self.thread.start()
         self.delete_file_thread.start()
 

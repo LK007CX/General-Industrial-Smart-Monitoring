@@ -62,11 +62,13 @@ class ImageSettingsWidget(QWidget):
         """leftLayout"""
         leftLayout = QVBoxLayout()
         leftLayout.addWidget(self.enableLabel)
+        # leftLayout.addWidget(QLabel())
         leftLayout.addWidget(self.minimumStorageIntervalLabel)
         leftLayout.addWidget(self.maximumStorageQuantityLabel)
 
         """rightLayout"""
         rightLayout = QVBoxLayout()
+        # rightLayout.addWidget(QLabel())
         rightLayout.addWidget(self.enableSwitchButton, 0, Qt.AlignRight)
         rightLayout.addWidget(self.minimumStorageIntervalSpinBox)
         rightLayout.addWidget(self.maximumStorageQuantitySpinBox)

@@ -64,7 +64,7 @@ class HeaderWidget(QWidget):
         self.setLayout(layout)
 
         """self"""
-        self.test_data()
+        # self.test_data()
         self.setAttribute(Qt.WA_StyledBackground)
 
     def test_data(self):
@@ -75,6 +75,12 @@ class HeaderWidget(QWidget):
         self.timerRun.timeout.connect(lambda: self.changeState(1))
         self.timerRun.timeout.connect(lambda: self.timerError.singleShot(500, lambda: self.changeState(0)))
         self.timerRun.start(1000)
+
+    def changeRemoteServerStatus(self, boolean):
+        if boolean == True:
+            self.remoteServerStatusLabel.setStyleSheet("""background-color: green;""")
+        elif boolean == False:
+            self.remoteServerStatusLabel.setStyleSheet("""background-color: red;""")
 
     def changeState(self, val):
         """

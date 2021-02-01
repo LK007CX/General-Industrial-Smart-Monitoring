@@ -7,6 +7,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QDesktopWidget, QApplication, QTabWidget
 
+from ui.ApplicationSettingsWidget import ApplicationSettingWidget
 from ui.CameraSettingsWidget import CameraSettingsWidget
 from ui.DataUploadSettingsWidget import DataUploadSettingsWidget
 from ui.DetectSettingsWidget import DetectSettingsWidget
@@ -30,7 +31,7 @@ class SystemSettingsTabWidget(QTabWidget):
         self.modelSettinsTab = ModelSettingsWidget(config_path)
         self.dataUploadTab = DataUploadSettingsWidget(config_path)
         self.remoteCVTab = RemoteCVSettingsWidget(config_path)
-
+        self.applicationSettingsTab = ApplicationSettingWidget(config_path)
         self.init_ui()
         self.center()
 
@@ -46,6 +47,7 @@ class SystemSettingsTabWidget(QTabWidget):
         self.addTab(self.modelSettinsTab, "模型参数设置")
         self.addTab(self.dataUploadTab, "数据上报设置")
         self.addTab(self.remoteCVTab, "远程视频推送")
+        self.addTab(self.applicationSettingsTab, "系统参数设置")
         self.setWindowTitle("设置")
         self.setWindowIcon(QIcon(QPixmap('icon/logo.png')))
         self.setAttribute(Qt.WA_StyledBackground)
