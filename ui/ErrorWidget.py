@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 import sys
 
-import qdarkstyle
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QApplication
 
@@ -30,7 +29,6 @@ class ErrorWidget(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     win = ErrorWidget()
     win.show()
     sys.exit(app.exec_())

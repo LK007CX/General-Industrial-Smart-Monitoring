@@ -5,7 +5,6 @@ import time
 from collections import deque
 
 import cv2
-import qdarkstyle
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QColor
 from PyQt5.QtWidgets import QWidget, QListView, QVBoxLayout, QApplication
@@ -91,7 +90,6 @@ class HistoryListView(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     win = HistoryListView()
     win.show()
     sys.exit(app.exec_())

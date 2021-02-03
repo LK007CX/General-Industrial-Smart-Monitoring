@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 import sys
 
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtWidgets import QWidget, QPushButton, QLineEdit, QLabel, \
+    QHBoxLayout, QVBoxLayout, QSplitter, QApplication
 
 from ui.SwitchButton import SwitchButton
 
