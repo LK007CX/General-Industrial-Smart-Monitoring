@@ -71,12 +71,12 @@ QWidget {
     font-weight: normal;
 }
 #progressBar {
-    border: 1px solid #2196F3;/*边框以及边框颜色*/
+    border: 1px solid #2196F3;
     border-radius: 5px;
     background-color: #E0E0E0;
 }
 #progressBar::chunk {
     background-color: #2196F3;
-    width: 10px; /*区块宽度*/
+    width: 10px;
     margin: 0.5px;
 }
