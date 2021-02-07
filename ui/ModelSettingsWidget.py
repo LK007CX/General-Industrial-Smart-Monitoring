@@ -136,8 +136,12 @@ class ModelSettingsWidget(QWidget):
         Change model.
         :return: None
         """
+        # openfile_name = QFileDialog.getOpenFileName(self, '选择模型文件', './',
+        #                                             'TensorRT model(*.trt)')
+    
         openfile_name = QFileDialog.getOpenFileName(self, '选择模型文件', './',
-                                                    'TensorRT model(*.trt)')
+                                                    'TensorRT model(*.*)')
+
         if openfile_name[0] != '':
             self.modelLineEdit.setText(str(openfile_name[0]).split('/')[-1])
             self.model_path = openfile_name[0]
