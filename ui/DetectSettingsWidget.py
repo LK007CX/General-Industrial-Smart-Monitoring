@@ -230,6 +230,6 @@ if __name__ == '__main__':
     class_list_ = ['person', 'ok', 'ng']
     output_pin_list_ = ['12', '14', '16', '18']
     app = QApplication(sys.argv)
-    win = DetectSettingsWidget('../appsettings.xml', output_pin_list_)
+    win = DetectSettingsWidget('../appconfig/appconfig.xml', output_pin_list_)
     win.show()
     sys.exit(app.exec_())

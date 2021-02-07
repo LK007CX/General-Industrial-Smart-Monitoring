@@ -98,6 +98,6 @@ class HeaderWidget(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = HeaderWidget("../appsettings.xml", "异常带片智能监控")
+    win = HeaderWidget("../appconfig/appconfig.xml", "异常带片智能监控")
     win.show()
     sys.exit(app.exec_())

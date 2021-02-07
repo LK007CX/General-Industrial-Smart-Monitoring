@@ -60,6 +60,6 @@ class SystemSettingsTabWidget(QTabWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = SystemSettingsTabWidget("../appsettings.xml")
+    win = SystemSettingsTabWidget("../appconfig/appconfig.xml")
     win.show()
     sys.exit(app.exec_())

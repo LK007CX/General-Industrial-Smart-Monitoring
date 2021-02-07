@@ -236,6 +236,6 @@ class ModelSettingsWidget(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = ModelSettingsWidget('../appsettings.xml')
+    win = ModelSettingsWidget('../appconfig/appconfig.xml')
     win.show()
     sys.exit(app.exec_())

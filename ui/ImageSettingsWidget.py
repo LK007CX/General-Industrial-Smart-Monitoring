@@ -134,6 +134,6 @@ class ImageSettingsWidget(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = ImageSettingsWidget('../appsettings.xml')
+    win = ImageSettingsWidget('../appconfig/appconfig.xml')
     win.show()
     sys.exit(app.exec_())

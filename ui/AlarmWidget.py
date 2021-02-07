@@ -29,6 +29,6 @@ class AlarmWidget(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = AlarmWidget('../appsettings.xml')
+    win = AlarmWidget('../appconfig/appconfig.xml')
     win.show()
     sys.exit(app.exec_())

@@ -424,6 +424,6 @@ class DataUploadSettingsWidget(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = DataUploadSettingsWidget('../appsettings.xml')
+    win = DataUploadSettingsWidget('../appconfig/appconfig.xml')
     win.show()
     sys.exit(app.exec_())

@@ -181,6 +181,6 @@ class InputSettingsWidget(QWidget):
 if __name__ == '__main__':
     output_pin_list_ = ['12', '14', '16', '18']
     app = QApplication(sys.argv)
-    win = InputSettingsWidget("../appsettings.xml", output_pin_list_)
+    win = InputSettingsWidget("../appconfig/appconfig.xml", output_pin_list_)
     win.show()
     sys.exit(app.exec_())

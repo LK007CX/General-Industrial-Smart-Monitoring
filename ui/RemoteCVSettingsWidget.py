@@ -73,6 +73,6 @@ class RemoteCVSettingsWidget(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = RemoteCVSettingsWidget('../appsettings.xml')
+    win = RemoteCVSettingsWidget('../appconfig/appconfig.xml')
     win.show()
     sys.exit(app.exec_())

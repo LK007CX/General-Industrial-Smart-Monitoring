@@ -71,6 +71,6 @@ class ApplicationSettingWidget(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = ApplicationSettingWidget("../appsettings.xml")
+    win = ApplicationSettingWidget("../appconfig/appconfig.xml")
     win.show()
     sys.exit(app.exec_())

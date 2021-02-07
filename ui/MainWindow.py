@@ -361,6 +361,6 @@ class MainWindow(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = MainWindow("../appsettings.xml")
+    win = MainWindow("../appconfig/appconfig.xml")
     win.show()
     sys.exit(app.exec_())

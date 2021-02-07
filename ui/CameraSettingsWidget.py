@@ -159,6 +159,6 @@ class CameraSettingsWidget(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = CameraSettingsWidget('../appsettings.xml')
+    win = CameraSettingsWidget('../appconfig/appconfig.xml')
     win.show()
     sys.exit(app.exec_())

@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
         :return: None
         """
-        app.w = MainWindow("appsettings.xml")
+        app.w = MainWindow("appconfig/appconfig.xml")
         QTimer.singleShot(400, lambda: (splashScreen.progressBar.setValue(100),
                                         splashScreen.progressBarStatusLabel.setText("(5/5)加载完毕"),
                                         splashScreen.finish(app.w),
