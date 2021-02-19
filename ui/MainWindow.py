@@ -182,6 +182,9 @@ class MainWindow(QMainWindow):
         model_type = root.find('dataupload').find('model_type').text.split('.')[0]
         predict_type = root.find('dataupload').find('predict_type').text.split('.')[0]
 
+        application_title = root.find('app').find('application_title').text
+        self.headerWidget.titleLabel.setText(application_title)
+
         item_list = []
         for action in root.find('detect_items').findall('item'):
             category = action.find('category').text
