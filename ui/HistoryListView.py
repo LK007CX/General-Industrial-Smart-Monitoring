@@ -55,7 +55,7 @@ class HistoryListView(QWidget):
             self.fmodel.sort(0, Qt.DescendingOrder)
             time.sleep(0.01)
 
-    def addItem(self, image, label, time_):
+    def addItem(self, image, label, time_, coordinate):
         """
         Add item to the history listview.
         :param image: image
@@ -71,7 +71,7 @@ class HistoryListView(QWidget):
         item.setForeground(QColor("#19232D"))
         self.dmodel.appendRow(item)
         index = self.fmodel.mapFromSource(item.index())
-        widget = HistoryItemWidget(image, label, time_, item)
+        widget = HistoryItemWidget(image, label, time_, coordinate, item)
         item.setSizeHint(widget.sizeHint())
         self.historyListView.setIndexWidget(index, widget)
         self.fmodel.sort(0, Qt.DescendingOrder)

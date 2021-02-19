@@ -58,6 +58,11 @@ class SystemSettingsTabWidget(QTabWidget):
         self.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
 
 
+
+
+
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     win = SystemSettingsTabWidget("../appconfig/appconfig.xml")

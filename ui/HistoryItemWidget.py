@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QWidget, QListWidgetItem, QLabel, QVBoxLayout, \
 class HistoryItemWidget(QWidget):
     itemDeleted = pyqtSignal(QListWidgetItem)
 
-    def __init__(self, image, log, time, item, *args, **kwargs):
+    def __init__(self, image, log, time, coordinate, item, *args, **kwargs):
         super(HistoryItemWidget, self).__init__(*args, **kwargs)
 
         self.image = image
@@ -20,9 +20,13 @@ class HistoryItemWidget(QWidget):
         self.time = time
         self._item = item
 
+        self.coordinate = coordinate
+
         self.classLabel = QLabel(self.label, objectName="classLabel")
         self.timeLabel = QLabel(self.time, objectName="timeLabel")
         self.imageLabel = QLabel(objectName="imageLabel")
+        # self.coordinateLabel = QLabel("[xmin, ymin, xmax, ymax]", objectName="coordinateLabel")
+        self.coordinateLabel = QLabel(self.coordinate, objectName="coordinateLabel")
 
         self.init_ui()
 
@@ -43,10 +47,17 @@ class HistoryItemWidget(QWidget):
 
         leftLayout = QVBoxLayout()
         leftLayout.addWidget(self.classLabel, 0, Qt.AlignBottom | Qt.AlignCenter)
+        leftLayout.addWidget(self.coordinateLabel, 0, Qt.AlignCenter | Qt.AlignCenter)
         leftLayout.addWidget(self.timeLabel, 0, Qt.AlignTop | Qt.AlignCenter)
-        layout = QHBoxLayout()
-        layout.addLayout(leftLayout)
+
+        # leftLayout.addWidget(self.classLabel)
+        # leftLayout.addWidget(self.coordinateLabel)
+        # leftLayout.addWidget(self.timeLabel)
+
+        layout = QHBoxLayout(spacing=0)
+        layout.setContentsMargins(3, 0, 0, 0)
         layout.addWidget(self.imageLabel)
+        layout.addLayout(leftLayout)
 
         self.setLayout(layout)
         self.setObjectName("historyItemWidget")

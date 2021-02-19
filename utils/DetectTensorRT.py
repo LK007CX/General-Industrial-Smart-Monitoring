@@ -91,7 +91,7 @@ class GstServer(GstRtspServer.RTSPServer):
 
 class DetectTensorRT(QThread):
     image_Signal = pyqtSignal(np.ndarray)
-    history_Signal = pyqtSignal(np.ndarray, str, str)
+    history_Signal = pyqtSignal(np.ndarray, str, str, str)
     num_Signal = pyqtSignal(str)
     info_Signal = pyqtSignal(str)
     gpio_Signal = pyqtSignal(Item)
@@ -228,7 +228,7 @@ class DetectTensorRT(QThread):
         :return: None
         """
         # 这里有个性能妥协
-        self.history_Signal.emit(history_image, label, current_time)
+        self.history_Signal.emit(history_image, label, current_time, str(box))
         self.num_Signal.emit(label)
         self.info_Signal.emit(str(box) + '\t' + str(conf) + '\t' + str(label))
         if self.enable_save_image and time.time() - self.save_start_time > self.args.minimum_storage_interval:

@@ -28,4 +28,5 @@ sudo apt install python3 python3-gst-1.0 \
     gir1.2-gst-rtsp-server-1.0
 ```
 ### 1.3 其他环境
-PyQt5
+PyQt5"add a new line" 
+"add a new line" 

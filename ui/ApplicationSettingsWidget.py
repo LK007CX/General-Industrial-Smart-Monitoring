@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import sys
-
+import xml.etree.ElementTree as ET
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget, QPushButton, QLineEdit, QLabel, \
     QHBoxLayout, QVBoxLayout, QSplitter, QApplication
@@ -37,6 +37,9 @@ class ApplicationSettingWidget(QWidget):
         enableLayout.addWidget(self.autoStartSwitchButton)
         self.enableWidget.setLayout(enableLayout)
 
+        """slot"""
+        self.savePushButton.clicked.connect(self.saveAction)
+
         """size"""
         self.applicationTitleLabel.setFixedWidth(200)
         self.applicationTitleLineEdit.setFixedWidth(200)
@@ -68,6 +71,41 @@ class ApplicationSettingWidget(QWidget):
         layout.addWidget(QSplitter(Qt.Vertical))
         self.setLayout(layout)
 
+    def load_config(self):
+        """
+        Load application configuration.
+        :return: None
+        """
+        tree = ET.parse(self.config_path)
+        root = tree.getroot()
+        auto_start = root.find('app').find('auto_start').text
+        application_title = root.find('app').find('application_title').text
+
+        enable = bool(int(auto_start))
+        self.autoStartSwitchButton.setChecked(enable)
+
+        self.applicationTitleLineEdit.setText(application_title)
+
+    def showEvent(self, QShowEvent):
+        """
+        Reload application configuration when widget show again.
+        :param QShowEvent: ignore this
+        :return: None
+        """
+        self.load_config()
+
+    def saveAction(self):
+        """
+        Slot function to save user parameters.
+        :return: None
+        """
+        tree = ET.parse(self.config_path)
+        root = tree.getroot()
+
+        auto_start = self.autoStartSwitchButton.checked
+        root.find('app').find('auto_start').text = "1" if auto_start else "0"
+        root.find('app').find('application_title').text = self.applicationTitleLineEdit.text()
+        tree.write(self.config_path)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
