@@ -21,12 +21,12 @@
         <detecttime>5</detecttime>
     </input>
     <image>
-        <enable>0</enable>
-        <minimumstorageinterval>9</minimumstorageinterval>
-        <maximumstoragequantity>300</maximumstoragequantity>
+        <enable>1</enable>
+        <minimumstorageinterval>1</minimumstorageinterval>
+        <maximumstoragequantity>100</maximumstoragequantity>
     </image>
     <dataupload>
-        <enable>1</enable>
+        <enable>0</enable>
         <server_address>http://10.6.114.69:5001</server_address>
         <host_name>fe80::5835:7acf:8ebc:b7b3%71</host_name>
         <conn_timeout>0.1</conn_timeout>
@@ -48,7 +48,7 @@
         <predict_type>0</predict_type>
     </dataupload>
     <remotecv>
-        <enable>1</enable>
+        <enable>0</enable>
     </remotecv>
     <detect_items>
         <temp>leave this node alone...</temp>

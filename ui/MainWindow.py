@@ -303,7 +303,9 @@ class MainWindow(QMainWindow):
         """
         self.thread = DetectTensorRT(self.args)
         self.gpio_thread = GPIOThread(self.args)
-        pwd = os.getcwd()
+        pwd = os.getcwd() + "/image"
+        # print(pwd)
+        # print(type(pwd))
         max_save_num = self.args.maximum_storage_quantity
         self.delete_file_thread = DeleteFileThread(pwd, max_save_num)
 

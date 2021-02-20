@@ -6,6 +6,7 @@ from utils.edgeAgent import http_post, gen_edgeeye_predict_json
 
 
 class EdgeAgentWorker(QThread):
+    # indicate the status of the server
     remote_server_status_signal = pyqtSignal(bool)
 
     def __init__(self, args, parent=None):
@@ -20,7 +21,6 @@ class EdgeAgentWorker(QThread):
         :param info: information
         :return: None
         """
-
         rtn = http_post(url=self.server_address, \
                         send_headers={"Content-Type": "application/json; charset=UTF-8", "user-agent": "EdgeApp"}, \
                         send_info=gen_edgeeye_predict_json([info], "POST"), \

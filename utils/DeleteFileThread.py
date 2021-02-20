@@ -14,7 +14,9 @@ class DeleteFileThread(QThread):
         super(DeleteFileThread, self).__init__(parent)
 
         self.max_save_num = max_save_num
+        # print(self.max_save_num)
         self.file_path = file_path
+        # print(self.file_path)
 
     def sort_file_by_time(self):
         """
@@ -33,6 +35,8 @@ class DeleteFileThread(QThread):
             temp_list = []
             for file_name in dir_list:
                 temp_list.append(os.path.join(self.file_path, file_name))
+            # print(len(temp_list))
+            # print(temp_list)
             return temp_list
 
     def delete_file_by_index(self, temp_list):
@@ -44,7 +48,7 @@ class DeleteFileThread(QThread):
         try:
             length = len(temp_list)
             if length < self.max_save_num:
-                pass
+                return
             delete_list = temp_list[0: (length - self.max_save_num)]
             for file_name in delete_list:
                 if not os.path.exists(file_name):
