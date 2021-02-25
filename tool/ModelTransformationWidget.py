@@ -7,16 +7,12 @@
 # @Software: PyCharm
 import sys
 
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
 
 class ModelTransformationWidget(QWidget):
     def __init__(self, *args, **kwargs):
         super(ModelTransformationWidget, self).__init__(*args, **kwargs)
-
-
 
 
 if __name__ == '__main__':

@@ -198,7 +198,7 @@ class DetectTensorRT(QThread):
         """
         # if not self.enable_data_upload:
         #     return
-        image_name = current_time + str(random.randint(1000, 9999)) + '.jpg'
+        image_name = current_time + "_" + str(random.randint(1000, 9999)) + '.jpg'
         self.inference_box_info = self.inference_box_info._replace(image_name=image_name)
         self.inference_box_info = self.inference_box_info._replace(box_seq="0")
         self.inference_box_info = self.inference_box_info._replace(box_label=label)
@@ -301,7 +301,7 @@ class DetectTensorRT(QThread):
                         # 在此假设检测标签不重复（事实上也是如此），模型输出标签可以重复
                         if self.item_dict[label].allow_alarm(label, conf):
                             history_image = self.vis.draw_bboxes(img, [box], [conf], [cls])
-                            current_time = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
+                            current_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
                             if self.enable_data_upload:
                                 self.generate_info(current_time, label, box, cls, history_image, img)  # 数据上报
                             self.output(history_image, label, current_time, box, conf)  # 输出
@@ -311,7 +311,7 @@ class DetectTensorRT(QThread):
                             # 在此假设检测标签不重复（事实上也是如此），模型输出标签可以重复
                             if self.item_dict[label].allow_alarm(label, conf):
                                 history_image = self.vis.draw_bboxes(img, [box], [conf], [cls])
-                                current_time = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
+                                current_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
                                 if self.enable_data_upload:
                                     self.generate_info(current_time, label, box, cls, history_image, img)  # 数据上报
                                 self.output(history_image, label, current_time, box, conf)  # 输出

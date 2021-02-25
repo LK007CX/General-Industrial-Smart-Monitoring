@@ -1,1 +1,1 @@
-docker build -t gism:v1.5
+docker build -t gism:v1.5 .

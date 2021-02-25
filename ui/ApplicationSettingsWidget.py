@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import xml.etree.ElementTree as ET
+
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget, QPushButton, QLineEdit, QLabel, \
     QHBoxLayout, QVBoxLayout, QSplitter, QApplication
@@ -106,6 +107,7 @@ class ApplicationSettingWidget(QWidget):
         root.find('app').find('auto_start').text = "1" if auto_start else "0"
         root.find('app').find('application_title').text = self.applicationTitleLineEdit.text()
         tree.write(self.config_path)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

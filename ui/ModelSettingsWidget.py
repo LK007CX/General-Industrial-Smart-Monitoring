@@ -138,7 +138,7 @@ class ModelSettingsWidget(QWidget):
         """
         # openfile_name = QFileDialog.getOpenFileName(self, '选择模型文件', './',
         #                                             'TensorRT model(*.trt)')
-    
+
         openfile_name = QFileDialog.getOpenFileName(self, '选择模型文件', './',
                                                     'TensorRT model(*.*)')
 

@@ -1,7 +1,7 @@
 import sys
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
+
 from PyQt5.QtWidgets import *
+
 
 class Widget(QWidget):
     def __init__(self, parent=None):
@@ -22,8 +22,8 @@ class Widget(QWidget):
 
 
 if __name__ == '__main__':
-  app = QApplication(sys.argv)
-  widget = Widget()
-  widget.show()
+    app = QApplication(sys.argv)
+    widget = Widget()
+    widget.show()
 
-  sys.exit(app.exec_())  
+    sys.exit(app.exec_())
