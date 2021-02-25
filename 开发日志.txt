@@ -2,11 +2,9 @@
 docker 数据持久化
 使用卷存储模型、names
 
-
 RTSP相机link线程
 
 数据存储
-
 
 模型设置页面在linux运行，不支持类似c://documents//github//...类似的文件地址，因为访问不到
 

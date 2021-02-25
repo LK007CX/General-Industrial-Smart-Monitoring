@@ -77,6 +77,11 @@ class HeaderWidget(QWidget):
         self.timerRun.start(1000)
 
     def changeRemoteServerStatus(self, boolean):
+        """
+        Change remote server status that display in main ui.
+        :param boolean:
+        :return:
+        """
         if boolean == True:
             self.remoteServerStatusLabel.setStyleSheet("""background-color: green;""")
         elif boolean == False:

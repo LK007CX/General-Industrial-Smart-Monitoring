@@ -98,63 +98,66 @@ class DetectSettingsWidget(QWidget):
         Save item to application configuration.
         :return: None
         """
-        tree = ET.parse(self.config_path)
-        root = tree.getroot()
+        try:
+            tree = ET.parse(self.config_path)
+            root = tree.getroot()
 
-        """remove all action"""
-        for detect in root.findall('detect_items'):
-            for action in detect.findall('item'):
-                detect.remove(action)
+            """remove all action"""
+            for detect in root.findall('detect_items'):
+                for action in detect.findall('item'):
+                    detect.remove(action)
 
-        """check for duplicate settings(class and output pin)"""
-        local_item_class_list = []
-        local_output_pin_list = []
-        for _ in range(self.detectListWidget.count()):
-            item = self.detectListWidget.item(_)
-            widget = self.detectListWidget.itemWidget(item)
-            category = str(widget.classComboBox.currentText())
-            output_pin = str(widget.outputPinComboBox.currentText())
-            if category in local_item_class_list:
-                QMessageBox.warning(self, "警告", "检测标签重复配置！\n单击Yes后，请重新配置。", QMessageBox.Yes, QMessageBox.Yes)
-                return
-            if output_pin in local_output_pin_list:
-                QMessageBox.warning(self, "警告", "输出引脚重复配置！\n单击Yes后，请重新配置。", QMessageBox.Yes, QMessageBox.Yes)
-                return
-            local_item_class_list.append(category)
-            local_output_pin_list.append(output_pin)
+            """check for duplicate settings(class and output pin)"""
+            local_item_class_list = []
+            local_output_pin_list = []
+            for _ in range(self.detectListWidget.count()):
+                item = self.detectListWidget.item(_)
+                widget = self.detectListWidget.itemWidget(item)
+                category = str(widget.classComboBox.currentText())
+                output_pin = str(widget.outputPinComboBox.currentText())
+                if category in local_item_class_list:
+                    QMessageBox.warning(self, "警告", "检测标签重复配置！\n单击Yes后，请重新配置。", QMessageBox.Yes, QMessageBox.Yes)
+                    return
+                if output_pin in local_output_pin_list:
+                    QMessageBox.warning(self, "警告", "输出引脚重复配置！\n单击Yes后，请重新配置。", QMessageBox.Yes, QMessageBox.Yes)
+                    return
+                local_item_class_list.append(category)
+                local_output_pin_list.append(output_pin)
 
-        """add item to application configuration"""
-        for _ in range(self.detectListWidget.count()):
-            item = self.detectListWidget.item(_)
-            widget = self.detectListWidget.itemWidget(item)
+            """add item to application configuration"""
+            for _ in range(self.detectListWidget.count()):
+                item = self.detectListWidget.item(_)
+                widget = self.detectListWidget.itemWidget(item)
 
-            category = str(widget.classComboBox.currentText())
-            frames = str(widget.confirmFramesSpinBox.value())
-            thresh = str(widget.threshDoubleSpinBox.value())
-            pin = str(widget.outputPinComboBox.currentText())
-            time = str(widget.outputTimeDoubleSpinBox.value())
-            mode = str(widget.outputModeComboBox.currentText())
+                category = str(widget.classComboBox.currentText())
+                frames = str(widget.confirmFramesSpinBox.value())
+                thresh = str(widget.threshDoubleSpinBox.value())
+                pin = str(widget.outputPinComboBox.currentText())
+                time = str(widget.outputTimeDoubleSpinBox.value())
+                mode = str(widget.outputModeComboBox.currentText())
 
-            action = ET.Element('item')
-            category_node = ET.SubElement(action, 'category')
-            category_node.text = category
-            frames_node = ET.SubElement(action, 'frames')
-            frames_node.text = frames
-            thresh_node = ET.SubElement(action, 'thresh')
-            thresh_node.text = thresh
-            pin_node = ET.SubElement(action, 'pin')
-            pin_node.text = pin
-            time_node = ET.SubElement(action, 'time')
-            time_node.text = time
-            mode_node = ET.SubElement(action, 'mode')
-            mode_node.text = "0" if mode == "低脉冲" else "1"
+                action = ET.Element('item')
+                category_node = ET.SubElement(action, 'category')
+                category_node.text = category
+                frames_node = ET.SubElement(action, 'frames')
+                frames_node.text = frames
+                thresh_node = ET.SubElement(action, 'thresh')
+                thresh_node.text = thresh
+                pin_node = ET.SubElement(action, 'pin')
+                pin_node.text = pin
+                time_node = ET.SubElement(action, 'time')
+                time_node.text = time
+                mode_node = ET.SubElement(action, 'mode')
+                mode_node.text = "0" if mode == "低脉冲" else "1"
 
-            detect = root.find('detect_items')
-            detect.extend((action,))
+                detect = root.find('detect_items')
+                detect.extend((action,))
 
-        tree.write(self.config_path)
-        self.pretty_xml(root, '\t', '\n')
-        tree.write(self.config_path)
+            tree.write(self.config_path)
+            self.pretty_xml(root, '\t', '\n')
+            tree.write(self.config_path)
+        except Exception as e:
+            print(e)
 
     def pretty_xml(self, element, indent, newline, level=0):
         """
@@ -194,28 +197,31 @@ class DetectSettingsWidget(QWidget):
         Load application configuration.
         :return: None
         """
-        self.doClearItem()
-        tree = ET.parse(self.config_path)
-        root = tree.getroot()
-        for action in root.find('detect_items').findall('item'):
-            category = action.find('category').text
-            frames = int(action.find('frames').text)
-            thresh = float(action.find('thresh').text)
-            pin = str(action.find('pin').text)
-            time = float(action.find('time').text)
-            mode = int(action.find('mode').text)
+        try:
+            self.doClearItem()
+            tree = ET.parse(self.config_path)
+            root = tree.getroot()
+            for action in root.find('detect_items').findall('item'):
+                category = action.find('category').text
+                frames = int(action.find('frames').text)
+                thresh = float(action.find('thresh').text)
+                pin = str(action.find('pin').text)
+                time = float(action.find('time').text)
+                mode = int(action.find('mode').text)
 
-            item = QListWidgetItem(self.detectListWidget)
-            item.setSizeHint(QSize(200, 50))
-            widget = ItemWidget(self.class_list, self.output_pin_list, item)
-            widget.itemDeleted.connect(self.doDeleteItem)
-            widget.classComboBox.setCurrentText(category)
-            widget.confirmFramesSpinBox.setValue(frames)
-            widget.threshDoubleSpinBox.setValue(thresh)
-            widget.outputPinComboBox.setCurrentText(pin)
-            widget.outputTimeDoubleSpinBox.setValue(time)
-            widget.outputModeComboBox.setCurrentIndex(mode)
-            self.detectListWidget.setItemWidget(item, widget)
+                item = QListWidgetItem(self.detectListWidget)
+                item.setSizeHint(QSize(200, 50))
+                widget = ItemWidget(self.class_list, self.output_pin_list, item)
+                widget.itemDeleted.connect(self.doDeleteItem)
+                widget.classComboBox.setCurrentText(category)
+                widget.confirmFramesSpinBox.setValue(frames)
+                widget.threshDoubleSpinBox.setValue(thresh)
+                widget.outputPinComboBox.setCurrentText(pin)
+                widget.outputTimeDoubleSpinBox.setValue(time)
+                widget.outputModeComboBox.setCurrentIndex(mode)
+                self.detectListWidget.setItemWidget(item, widget)
+        except Exception as e:
+            print(e)
 
     def showEvent(self, QShowEvent):
         """

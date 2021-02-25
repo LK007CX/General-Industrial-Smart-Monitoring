@@ -10,16 +10,23 @@ from PyQt5.QtWidgets import QTableWidget, QHeaderView, QAbstractItemView, \
 class AlarmTableWidget(QTableWidget):
     def __init__(self, config_path, row_count=10, column_count=2, *args, **kwargs):
         super(AlarmTableWidget, self).__init__(*args, **kwargs)
+        self.column_count = column_count
+        self.row_count = row_count
+        self.category_list = []
+        self.configPath = config_path
+        self.init_data()
 
-        self.setColumnCount(column_count)
-        self.setRowCount(row_count)
+    def init_ui(self):
+        """
+        Initialize UI.
+        :return: None
+        """
+        self.setColumnCount(self.column_count)
+        self.setRowCount(self.row_count)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.setHorizontalHeaderLabels(["报警类名", "报警次数"])
-        self.category_list = []
-        self.configPath = config_path
-        self.test_data()
         self.setAttribute(Qt.WA_StyledBackground)
         self.setAlternatingRowColors(True)
 
@@ -38,17 +45,21 @@ class AlarmTableWidget(QTableWidget):
         self.setItem(column, 0, item0)
         self.setItem(column, 1, item1)
 
-    def test_data(self):
+    def init_data(self):
         """
         Test data.
         :return: None
         """
-        tree = ET.parse(self.configPath)
-        root = tree.getroot()
-        for action in root.find('detect_items').findall('item'):
-            category = action.find('category').text
-            self.category_list.append(category)
-        self.setRowCount(len(self.category_list))
+        try:
+            tree = ET.parse(self.configPath)
+            root = tree.getroot()
+            for action in root.find('detect_items').findall('item'):
+                category = action.find('category').text
+                self.category_list.append(category)
+            self.setRowCount(len(self.category_list))
+        except Exception as e:
+            """Here will emit a signal."""
+            print(e)
         for i in range(len(self.category_list)):
             item0 = QTableWidgetItem(self.category_list[i])
             item0.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)

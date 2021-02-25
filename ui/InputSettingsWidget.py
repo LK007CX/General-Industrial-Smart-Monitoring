@@ -113,61 +113,67 @@ class InputSettingsWidget(QWidget):
         Load application configuration.
         :return: None
         """
-        tree = ET.parse(self.configPath)
-        root = tree.getroot()
+        try:
+            tree = ET.parse(self.configPath)
+            root = tree.getroot()
 
-        mode = root.find('input').find('mode').text
-        if mode == "continuous detect":
-            self.continuousDetectRadioButton.setChecked(True)
-            self.levelTriggerRadioButton.setChecked(False)
-        elif mode == "level trigger":
-            self.continuousDetectRadioButton.setChecked(False)
-            self.levelTriggerRadioButton.setChecked(True)
+            mode = root.find('input').find('mode').text
+            if mode == "continuous detect":
+                self.continuousDetectRadioButton.setChecked(True)
+                self.levelTriggerRadioButton.setChecked(False)
+            elif mode == "level trigger":
+                self.continuousDetectRadioButton.setChecked(False)
+                self.levelTriggerRadioButton.setChecked(True)
 
-        inputpin = root.find('input').find('inputpin').text
-        self.inputPinComboBox.setCurrentText(inputpin)
+            inputpin = root.find('input').find('inputpin').text
+            self.inputPinComboBox.setCurrentText(inputpin)
 
-        triggermode = root.find('input').find('triggermode').text
-        if triggermode == "low pulse":
-            triggermode = "低脉冲"
-        elif triggermode == "high pulse":
-            triggermode = "高脉冲"
-        self.triggerModeComboBox.setCurrentText(triggermode)
+            triggermode = root.find('input').find('triggermode').text
+            if triggermode == "low pulse":
+                triggermode = "低脉冲"
+            elif triggermode == "high pulse":
+                triggermode = "高脉冲"
+            self.triggerModeComboBox.setCurrentText(triggermode)
 
-        timedelay = root.find('input').find('timedelay').text
-        self.timeDelaySpinBox.setValue(int(timedelay))
+            timedelay = root.find('input').find('timedelay').text
+            self.timeDelaySpinBox.setValue(int(timedelay))
 
-        detecttime = root.find('input').find('detecttime').text
-        self.detectTimeSpinBox.setValue(int(detecttime))
+            detecttime = root.find('input').find('detecttime').text
+            self.detectTimeSpinBox.setValue(int(detecttime))
+        except Exception as e:
+            print(e)
 
     def saveAction(self):
         """
         Slot function to save user parameters.
         :return: None
         """
-        tree = ET.parse(self.configPath)
-        root = tree.getroot()
+        try:
+            tree = ET.parse(self.configPath)
+            root = tree.getroot()
 
-        mode = "continuous detect" if self.continuousDetectRadioButton.isChecked() else "level trigger"
-        root.find('input').find('mode').text = mode
+            mode = "continuous detect" if self.continuousDetectRadioButton.isChecked() else "level trigger"
+            root.find('input').find('mode').text = mode
 
-        inputpin = self.inputPinComboBox.currentText()
-        root.find('input').find('inputpin').text = inputpin
+            inputpin = self.inputPinComboBox.currentText()
+            root.find('input').find('inputpin').text = inputpin
 
-        triggermode = self.triggerModeComboBox.currentText()
-        if triggermode == "低脉冲":
-            triggermode = "low pulse"
-        elif triggermode == "高脉冲":
-            triggermode = "high pulse"
-        root.find('input').find('triggermode').text = triggermode
+            triggermode = self.triggerModeComboBox.currentText()
+            if triggermode == "低脉冲":
+                triggermode = "low pulse"
+            elif triggermode == "高脉冲":
+                triggermode = "high pulse"
+            root.find('input').find('triggermode').text = triggermode
 
-        timedelay = self.timeDelaySpinBox.value()
-        root.find('input').find('timedelay').text = str(timedelay)
+            timedelay = self.timeDelaySpinBox.value()
+            root.find('input').find('timedelay').text = str(timedelay)
 
-        detecttime = self.detectTimeSpinBox.value()
-        root.find('input').find('detecttime').text = str(detecttime)
+            detecttime = self.detectTimeSpinBox.value()
+            root.find('input').find('detecttime').text = str(detecttime)
 
-        tree.write(self.configPath)
+            tree.write(self.configPath)
+        except Exception as e:
+            print(e)
 
     def showEvent(self, QShowEvent):
         """

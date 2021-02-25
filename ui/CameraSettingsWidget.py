@@ -13,7 +13,6 @@ class CameraSettingsWidget(QWidget):
 
     def __init__(self, config_path):
         super(CameraSettingsWidget, self).__init__()
-
         self.modeLabel = QLabel("相机类型")
         self.USBRadioButton = QRadioButton("USB相机")
         self.RTSPRadioButton = QRadioButton("RTSP相机")
@@ -103,50 +102,58 @@ class CameraSettingsWidget(QWidget):
         Load application configuration.
         :return: None
         """
-        tree = ET.parse(self.config_path)
-        root = tree.getroot()
+        try:
+            tree = ET.parse(self.config_path)
+            root = tree.getroot()
 
-        mode = root.find('camera').find('mode').text
-        if mode == 'USB':
-            self.USBRadioButton.setChecked(True)
-            self.RTSPRadioButton.setChecked(False)
-        elif mode == 'RTSP':
-            self.USBRadioButton.setChecked(False)
-            self.RTSPRadioButton.setChecked(True)
+            mode = root.find('camera').find('mode').text
+            if mode == 'USB':
+                self.USBRadioButton.setChecked(True)
+                self.RTSPRadioButton.setChecked(False)
+            elif mode == 'RTSP':
+                self.USBRadioButton.setChecked(False)
+                self.RTSPRadioButton.setChecked(True)
 
-        camera_id = root.find('camera').find('camera_id').text
-        self.cameraIndexComboBox.setCurrentText(camera_id)
+            camera_id = root.find('camera').find('camera_id').text
+            self.cameraIndexComboBox.setCurrentText(camera_id)
 
-        ip = root.find('camera').find('ip').text
-        self.cameraIPLineEdit.setText(ip)
+            ip = root.find('camera').find('ip').text
+            self.cameraIPLineEdit.setText(ip)
 
-        width = root.find('camera').find('width').text
-        height = root.find('camera').find('height').text
-        self.resolutionComboBox.setCurrentText(width + '*' + height)
+            width = root.find('camera').find('width').text
+            height = root.find('camera').find('height').text
+            self.resolutionComboBox.setCurrentText(width + '*' + height)
+        except Exception as e:
+            """Here will emit a signal."""
+            print(e)
 
     def saveAction(self):
         """
         Slot function to save user parameters.
         :return: None
         """
-        tree = ET.parse(self.config_path)
-        root = tree.getroot()
+        try:
+            tree = ET.parse(self.config_path)
+            root = tree.getroot()
 
-        mode = "USB" if self.USBRadioButton.isChecked() else "RTSP"
-        root.find('camera').find('mode').text = mode
+            mode = "USB" if self.USBRadioButton.isChecked() else "RTSP"
+            root.find('camera').find('mode').text = mode
 
-        camera_id = self.cameraIndexComboBox.currentText()
-        root.find('camera').find('camera_id').text = camera_id
+            camera_id = self.cameraIndexComboBox.currentText()
+            root.find('camera').find('camera_id').text = camera_id
 
-        ip = self.cameraIPLineEdit.text()
-        root.find('camera').find('ip').text = ip
+            ip = self.cameraIPLineEdit.text()
+            root.find('camera').find('ip').text = ip
 
-        width = self.resolutionComboBox.currentText().split('*')[0]
-        root.find('camera').find('width').text = width
+            width = self.resolutionComboBox.currentText().split('*')[0]
+            root.find('camera').find('width').text = width
 
-        height = self.resolutionComboBox.currentText().split('*')[1]
-        root.find('camera').find('height').text = height
-        tree.write(self.config_path)
+            height = self.resolutionComboBox.currentText().split('*')[1]
+            root.find('camera').find('height').text = height
+            tree.write(self.config_path)
+        except Exception as e:
+            """Here will emit a signal."""
+            print(e)
 
     def showEvent(self, QShowEvent):
         """

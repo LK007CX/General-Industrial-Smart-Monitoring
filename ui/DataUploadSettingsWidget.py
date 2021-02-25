@@ -280,68 +280,72 @@ class DataUploadSettingsWidget(QWidget):
         Load application configuration.
         :return: None
         """
-        tree = ET.parse(self.config_path)
-        root = tree.getroot()
+        try:
+            tree = ET.parse(self.config_path)
+            root = tree.getroot()
 
-        enable = bool(int(root.find('dataupload').find('enable').text))
-        self.enableSwitchButton.setChecked(enable)
+            enable = bool(int(root.find('dataupload').find('enable').text))
+            self.enableSwitchButton.setChecked(enable)
 
-        server_address = root.find('dataupload').find('server_address').text
-        self.serverAddressLineEdit.setText(server_address)
+            server_address = root.find('dataupload').find('server_address').text
+            self.serverAddressLineEdit.setText(server_address)
 
-        host_name = root.find('dataupload').find('host_name').text
-        self.hostNameLineEdit.setText(host_name)
+            host_name = root.find('dataupload').find('host_name').text
+            self.hostNameLineEdit.setText(host_name)
 
-        conn_timeout = float(root.find('dataupload').find('conn_timeout').text)
-        self.connectTimeoutDoubleSpinBox.setValue(conn_timeout)
+            conn_timeout = float(root.find('dataupload').find('conn_timeout').text)
+            self.connectTimeoutDoubleSpinBox.setValue(conn_timeout)
 
-        post_timeout = float(root.find('dataupload').find('post_timeout').text)
-        self.postTimeoutDoubleSpinBox.setValue(post_timeout)
+            post_timeout = float(root.find('dataupload').find('post_timeout').text)
+            self.postTimeoutDoubleSpinBox.setValue(post_timeout)
 
-        project_id = root.find('dataupload').find('project_id').text
-        self.projectIDLineEdit.setText(project_id)
+            project_id = root.find('dataupload').find('project_id').text
+            self.projectIDLineEdit.setText(project_id)
 
-        project_name = root.find('dataupload').find('project_name').text
-        self.projectNameLineEdit.setText(project_name)
+            project_name = root.find('dataupload').find('project_name').text
+            self.projectNameLineEdit.setText(project_name)
 
-        image_file_suffix = root.find('dataupload').find('image_file_suffix').text
-        self.imageFileSuffixLineEdit.setText(image_file_suffix)
+            image_file_suffix = root.find('dataupload').find('image_file_suffix').text
+            self.imageFileSuffixLineEdit.setText(image_file_suffix)
 
-        site = root.find('dataupload').find('site').text
-        self.siteComboBox.setCurrentText(site)
+            site = root.find('dataupload').find('site').text
+            self.siteComboBox.setCurrentText(site)
 
-        line_id = root.find('dataupload').find('line_id').text
-        self.lineIDLineEdit.setText(line_id)
+            line_id = root.find('dataupload').find('line_id').text
+            self.lineIDLineEdit.setText(line_id)
 
-        eqp_id = root.find('dataupload').find('eqp_id').text
-        self.eqpIDLineEdit.setText(eqp_id)
+            eqp_id = root.find('dataupload').find('eqp_id').text
+            self.eqpIDLineEdit.setText(eqp_id)
 
-        station_id = root.find('dataupload').find('station_id').text
-        self.stationIDLineEdit.setText(station_id)
+            station_id = root.find('dataupload').find('station_id').text
+            self.stationIDLineEdit.setText(station_id)
 
-        op_id = root.find('dataupload').find('op_id').text
-        self.opIDLineEdit.setText(op_id)
+            op_id = root.find('dataupload').find('op_id').text
+            self.opIDLineEdit.setText(op_id)
 
-        process_stage = root.find('dataupload').find('process_stage').text
-        self.processStageLineEdit.setText(process_stage)
+            process_stage = root.find('dataupload').find('process_stage').text
+            self.processStageLineEdit.setText(process_stage)
 
-        model_name = root.find('dataupload').find('model_name').text
-        self.modelNameLineEdit.setText(model_name)
+            model_name = root.find('dataupload').find('model_name').text
+            self.modelNameLineEdit.setText(model_name)
 
-        model_version = root.find('dataupload').find('model_version').text
-        self.modelVersionLineEdit.setText(model_version)
+            model_version = root.find('dataupload').find('model_version').text
+            self.modelVersionLineEdit.setText(model_version)
 
-        model_iteration = root.find('dataupload').find('model_iteration').text
-        self.modelIterationLineEdit.setText(model_iteration)
+            model_iteration = root.find('dataupload').find('model_iteration').text
+            self.modelIterationLineEdit.setText(model_iteration)
 
-        model_labels = root.find('dataupload').find('model_labels').text
-        self.modelLabelsLineEdit.setText(model_labels)
+            model_labels = root.find('dataupload').find('model_labels').text
+            self.modelLabelsLineEdit.setText(model_labels)
 
-        model_type = root.find('dataupload').find('model_type').text
-        self.modelTypeComboBox.setCurrentText(model_type)
+            model_type = root.find('dataupload').find('model_type').text
+            self.modelTypeComboBox.setCurrentText(model_type)
 
-        predict_type = root.find('dataupload').find('predict_type').text
-        self.predictTypeComboBox.setCurrentText(predict_type)
+            predict_type = root.find('dataupload').find('predict_type').text
+            self.predictTypeComboBox.setCurrentText(predict_type)
+        except Exception as e:
+            """Here will emit a signal."""
+            print(e)
 
     def showEvent(self, QShowEvent):
         """
@@ -356,70 +360,73 @@ class DataUploadSettingsWidget(QWidget):
         Slot function to save user parameters.
         :return: None
         """
-        tree = ET.parse(self.config_path)
-        root = tree.getroot()
+        try:
+            tree = ET.parse(self.config_path)
+            root = tree.getroot()
 
-        enable = self.enableSwitchButton.checked
-        root.find('dataupload').find('enable').text = "1" if enable else "0"
+            enable = self.enableSwitchButton.checked
+            root.find('dataupload').find('enable').text = "1" if enable else "0"
 
-        server_address = self.serverAddressLineEdit.text()
-        root.find('dataupload').find('server_address').text = server_address
+            server_address = self.serverAddressLineEdit.text()
+            root.find('dataupload').find('server_address').text = server_address
 
-        host_name = self.hostNameLineEdit.text()
-        root.find('dataupload').find('host_name').text = host_name
+            host_name = self.hostNameLineEdit.text()
+            root.find('dataupload').find('host_name').text = host_name
 
-        conn_timeout = self.connectTimeoutDoubleSpinBox.value()
-        root.find('dataupload').find('conn_timeout').text = str(conn_timeout)
+            conn_timeout = self.connectTimeoutDoubleSpinBox.value()
+            root.find('dataupload').find('conn_timeout').text = str(conn_timeout)
 
-        post_timeout = self.postTimeoutDoubleSpinBox.value()
-        root.find('dataupload').find('post_timeout').text = str(post_timeout)
+            post_timeout = self.postTimeoutDoubleSpinBox.value()
+            root.find('dataupload').find('post_timeout').text = str(post_timeout)
 
-        project_id = self.projectIDLineEdit.text()
-        root.find('dataupload').find('project_id').text = project_id
+            project_id = self.projectIDLineEdit.text()
+            root.find('dataupload').find('project_id').text = project_id
 
-        project_name = self.projectNameLineEdit.text()
-        root.find('dataupload').find('project_name').text = project_name
+            project_name = self.projectNameLineEdit.text()
+            root.find('dataupload').find('project_name').text = project_name
 
-        image_file_suffix = self.imageFileSuffixLineEdit.text()
-        root.find('dataupload').find('image_file_suffix').text = image_file_suffix
+            image_file_suffix = self.imageFileSuffixLineEdit.text()
+            root.find('dataupload').find('image_file_suffix').text = image_file_suffix
 
-        site = self.siteComboBox.currentText()
-        root.find('dataupload').find('site').text = site
+            site = self.siteComboBox.currentText()
+            root.find('dataupload').find('site').text = site
 
-        line_id = self.lineIDLineEdit.text()
-        root.find('dataupload').find('line_id').text = line_id
+            line_id = self.lineIDLineEdit.text()
+            root.find('dataupload').find('line_id').text = line_id
 
-        eqp_id = self.eqpIDLineEdit.text()
-        root.find('dataupload').find('eqp_id').text = eqp_id
+            eqp_id = self.eqpIDLineEdit.text()
+            root.find('dataupload').find('eqp_id').text = eqp_id
 
-        station_id = self.stationIDLineEdit.text()
-        root.find('dataupload').find('station_id').text = station_id
+            station_id = self.stationIDLineEdit.text()
+            root.find('dataupload').find('station_id').text = station_id
 
-        op_id = self.opIDLineEdit.text()
-        root.find('dataupload').find('op_id').text = op_id
+            op_id = self.opIDLineEdit.text()
+            root.find('dataupload').find('op_id').text = op_id
 
-        process_stage = self.processStageLineEdit.text()
-        root.find('dataupload').find('process_stage').text = process_stage
+            process_stage = self.processStageLineEdit.text()
+            root.find('dataupload').find('process_stage').text = process_stage
 
-        model_name = self.modelNameLineEdit.text()
-        root.find('dataupload').find('model_name').text = model_name
+            model_name = self.modelNameLineEdit.text()
+            root.find('dataupload').find('model_name').text = model_name
 
-        model_version = self.modelVersionLineEdit.text()
-        root.find('dataupload').find('model_version').text = model_version
+            model_version = self.modelVersionLineEdit.text()
+            root.find('dataupload').find('model_version').text = model_version
 
-        model_iteration = self.modelIterationLineEdit.text()
-        root.find('dataupload').find('model_iteration').text = model_iteration
+            model_iteration = self.modelIterationLineEdit.text()
+            root.find('dataupload').find('model_iteration').text = model_iteration
 
-        model_labels = self.modelLabelsLineEdit.text()
-        root.find('dataupload').find('model_labels').text = model_labels
+            model_labels = self.modelLabelsLineEdit.text()
+            root.find('dataupload').find('model_labels').text = model_labels
 
-        model_type = self.modelTypeComboBox.currentText()
-        root.find('dataupload').find('model_type').text = model_type.split('.')[0]
+            model_type = self.modelTypeComboBox.currentText()
+            root.find('dataupload').find('model_type').text = model_type.split('.')[0]
 
-        predict_type = self.predictTypeComboBox.currentText()
-        root.find('dataupload').find('predict_type').text = predict_type.split('.')[0]
+            predict_type = self.predictTypeComboBox.currentText()
+            root.find('dataupload').find('predict_type').text = predict_type.split('.')[0]
 
-        tree.write(self.config_path)
+            tree.write(self.config_path)
+        except Exception as e:
+            print(e)
 
 
 if __name__ == '__main__':

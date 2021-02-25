@@ -14,17 +14,13 @@ class ApplicationSettingWidget(QWidget):
 
     def __init__(self, config_path, *args, **kwargs):
         super(ApplicationSettingWidget, self).__init__(*args, **kwargs)
-
         self.applicationTitleLabel = QLabel("专案名称")
         self.applicationTitleLineEdit = QLineEdit()
         self.autoStartLabel = QLabel("开机启动")
         self.autoStartSwitchButton = SwitchButton()
         self.savePushButton = QPushButton("保存")
-
-        self.config_path = config_path
-
         self.enableWidget = QWidget()
-
+        self.config_path = config_path
         self.init_ui()
 
     def init_ui(self):
@@ -60,9 +56,6 @@ class ApplicationSettingWidget(QWidget):
         topLayout.addLayout(leftLayout)
         topLayout.addLayout(rightLayout)
 
-        # topLayout.addWidget(self.applicationTitleLabel)
-        # topLayout.addWidget(self.applicationTitleLineEdit)
-
         """layout"""
         layout = QVBoxLayout()
         layout.addWidget(QSplitter(Qt.Vertical))
@@ -77,15 +70,19 @@ class ApplicationSettingWidget(QWidget):
         Load application configuration.
         :return: None
         """
-        tree = ET.parse(self.config_path)
-        root = tree.getroot()
-        auto_start = root.find('app').find('auto_start').text
-        application_title = root.find('app').find('application_title').text
+        try:
+            tree = ET.parse(self.config_path)
+            root = tree.getroot()
+            auto_start = root.find('app').find('auto_start').text
+            application_title = root.find('app').find('application_title').text
 
-        enable = bool(int(auto_start))
-        self.autoStartSwitchButton.setChecked(enable)
+            enable = bool(int(auto_start))
+            self.autoStartSwitchButton.setChecked(enable)
 
-        self.applicationTitleLineEdit.setText(application_title)
+            self.applicationTitleLineEdit.setText(application_title)
+        except Exception as e:
+            """Here will emit a signal."""
+            print(e)
 
     def showEvent(self, QShowEvent):
         """
@@ -100,13 +97,16 @@ class ApplicationSettingWidget(QWidget):
         Slot function to save user parameters.
         :return: None
         """
-        tree = ET.parse(self.config_path)
-        root = tree.getroot()
-
-        auto_start = self.autoStartSwitchButton.checked
-        root.find('app').find('auto_start').text = "1" if auto_start else "0"
-        root.find('app').find('application_title').text = self.applicationTitleLineEdit.text()
-        tree.write(self.config_path)
+        try:
+            tree = ET.parse(self.config_path)
+            root = tree.getroot()
+            auto_start = self.autoStartSwitchButton.checked
+            root.find('app').find('auto_start').text = "1" if auto_start else "0"
+            root.find('app').find('application_title').text = self.applicationTitleLineEdit.text()
+            tree.write(self.config_path)
+        except Exception as e:
+            """Here will emit a signal."""
+            print(e)
 
 
 if __name__ == '__main__':

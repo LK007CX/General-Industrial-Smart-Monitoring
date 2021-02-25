@@ -130,169 +130,171 @@ class MainWindow(QMainWindow):
         :return: parameter
         """
         args = None
+        try:
+            tree = ET.parse(self.config_path)
+            root = tree.getroot()
 
-        tree = ET.parse(self.config_path)
-        root = tree.getroot()
+            camera_mode = root.find('camera').find('mode').text
+            cameraID = int(root.find('camera').find('camera_id').text)
+            ip = root.find('camera').find('ip').text
+            width = int(root.find('camera').find('width').text)
+            height = int(root.find('camera').find('height').text)
+            detecttime = int(root.find('input').find('detecttime').text)
+            input_pin = int(root.find('input').find('inputpin').text)
+            trigger_mode = root.find('input').find('triggermode').text
+            detect_mode = root.find('input').find('mode').text
+            time_delay = int(root.find('input').find('timedelay').text)
 
-        camera_mode = root.find('camera').find('mode').text
-        cameraID = int(root.find('camera').find('camera_id').text)
-        ip = root.find('camera').find('ip').text
-        width = int(root.find('camera').find('width').text)
-        height = int(root.find('camera').find('height').text)
-        detecttime = int(root.find('input').find('detecttime').text)
-        input_pin = int(root.find('input').find('inputpin').text)
-        trigger_mode = root.find('input').find('triggermode').text
-        detect_mode = root.find('input').find('mode').text
-        time_delay = int(root.find('input').find('timedelay').text)
+            modelpath = root.find('model').find('modelpath').text
+            labelsfile = root.find('model').find('labelsfile').text
+            thresh = float(root.find('model').find('thresh').text)
+            size = root.find('model').find('size').text
 
-        modelpath = root.find('model').find('modelpath').text
-        labelsfile = root.find('model').find('labelsfile').text
-        thresh = float(root.find('model').find('thresh').text)
-        size = root.find('model').find('size').text
+            category_num = int(root.find('model').find('category_num').text)
 
-        category_num = int(root.find('model').find('category_num').text)
+            minimum_storage_interval = int(root.find('image').find('minimumstorageinterval').text)
 
-        minimum_storage_interval = int(root.find('image').find('minimumstorageinterval').text)
+            maximum_storage_quantity = int(root.find('image').find('maximumstoragequantity').text)
 
-        maximum_storage_quantity = int(root.find('image').find('maximumstoragequantity').text)
+            enable_save_image = bool(int(root.find('image').find('enable').text))
 
-        enable_save_image = bool(int(root.find('image').find('enable').text))
+            enable_remote_cv = bool(int(root.find('remotecv').find('enable').text))
 
-        enable_remote_cv = bool(int(root.find('remotecv').find('enable').text))
+            enable_data_upload = bool(int(root.find('dataupload').find('enable').text))
 
-        enable_data_upload = bool(int(root.find('dataupload').find('enable').text))
+            server_address = root.find('dataupload').find('server_address').text
+            host_name = root.find('dataupload').find('host_name').text
+            conn_timeout = float(root.find('dataupload').find('conn_timeout').text)
+            post_timeout = float(root.find('dataupload').find('post_timeout').text)
+            project_id = root.find('dataupload').find('project_id').text
+            project_name = root.find('dataupload').find('project_name').text
+            image_file_suffix = root.find('dataupload').find('image_file_suffix').text
+            site = root.find('dataupload').find('site').text
+            line_id = root.find('dataupload').find('line_id').text
+            eqp_id = root.find('dataupload').find('eqp_id').text
+            station_id = root.find('dataupload').find('station_id').text
+            op_id = root.find('dataupload').find('op_id').text
+            process_stage = root.find('dataupload').find('process_stage').text
+            model_name = root.find('dataupload').find('model_name').text
+            model_version = root.find('dataupload').find('model_version').text
+            model_iteration = root.find('dataupload').find('model_iteration').text
+            model_labels = root.find('dataupload').find('model_labels').text
+            model_type = root.find('dataupload').find('model_type').text.split('.')[0]
+            predict_type = root.find('dataupload').find('predict_type').text.split('.')[0]
 
-        server_address = root.find('dataupload').find('server_address').text
-        host_name = root.find('dataupload').find('host_name').text
-        conn_timeout = float(root.find('dataupload').find('conn_timeout').text)
-        post_timeout = float(root.find('dataupload').find('post_timeout').text)
-        project_id = root.find('dataupload').find('project_id').text
-        project_name = root.find('dataupload').find('project_name').text
-        image_file_suffix = root.find('dataupload').find('image_file_suffix').text
-        site = root.find('dataupload').find('site').text
-        line_id = root.find('dataupload').find('line_id').text
-        eqp_id = root.find('dataupload').find('eqp_id').text
-        station_id = root.find('dataupload').find('station_id').text
-        op_id = root.find('dataupload').find('op_id').text
-        process_stage = root.find('dataupload').find('process_stage').text
-        model_name = root.find('dataupload').find('model_name').text
-        model_version = root.find('dataupload').find('model_version').text
-        model_iteration = root.find('dataupload').find('model_iteration').text
-        model_labels = root.find('dataupload').find('model_labels').text
-        model_type = root.find('dataupload').find('model_type').text.split('.')[0]
-        predict_type = root.find('dataupload').find('predict_type').text.split('.')[0]
+            application_title = root.find('app').find('application_title').text
+            self.headerWidget.titleLabel.setText(application_title)
 
-        application_title = root.find('app').find('application_title').text
-        self.headerWidget.titleLabel.setText(application_title)
+            item_list = []
+            for action in root.find('detect_items').findall('item'):
+                category = action.find('category').text
+                confirm_frames = int(action.find('frames').text)
+                thresh = float(action.find('thresh').text)
+                pin = int(action.find('pin').text)
+                time = float(action.find('time').text)
+                mode = int(action.find('mode').text)
 
-        item_list = []
-        for action in root.find('detect_items').findall('item'):
-            category = action.find('category').text
-            confirm_frames = int(action.find('frames').text)
-            thresh = float(action.find('thresh').text)
-            pin = int(action.find('pin').text)
-            time = float(action.find('time').text)
-            mode = int(action.find('mode').text)
+                item = Item(category=category, confirm_frames=confirm_frames, thresh=thresh, pin=pin, time=time, mode=mode)
+                item_list.append(item)
 
-            item = Item(category=category, confirm_frames=confirm_frames, thresh=thresh, pin=pin, time=time, mode=mode)
-            item_list.append(item)
-
-        if camera_mode == 'USB':
-            args = ArgsHelper(image=None,
-                              video=None,
-                              video_looping=False,
-                              rtsp=None,
-                              rtsp_latency=200,
-                              usb=cameraID,
-                              onboard=None,
-                              copy_frame=False,
-                              do_resize=False,
-                              width=width,
-                              height=height,
-                              category_num=category_num,
-                              model=modelpath,
-                              detect_time=detecttime,
-                              input_pin=input_pin,
-                              trigger_mode=trigger_mode,
-                              time_delay=time_delay,
-                              detect_mode=detect_mode,
-                              yolo_dim=size,
-                              labelsfile=labelsfile,
-                              thresh=thresh,
-                              item_list=item_list,
-                              minimum_storage_interval=minimum_storage_interval,
-                              maximum_storage_quantity=maximum_storage_quantity,
-                              enable_save_image=enable_save_image,
-                              enable_remote_cv=enable_remote_cv,
-                              enable_data_upload=enable_data_upload,
-                              server_address=server_address,
-                              host_name=host_name,
-                              conn_timeout=conn_timeout,
-                              post_timeout=post_timeout,
-                              project_id=project_id,
-                              project_name=project_name,
-                              image_file_suffix=image_file_suffix,
-                              site=site,
-                              line_id=line_id,
-                              eqp_id=eqp_id,
-                              station_id=station_id,
-                              op_id=op_id,
-                              process_stage=process_stage,
-                              model_name=model_name,
-                              model_version=model_version,
-                              model_iteration=model_iteration,
-                              model_labels=model_labels,
-                              model_type=model_type,
-                              predict_type=predict_type
-                              )
-        elif camera_mode == 'RTSP':
-            args = ArgsHelper(image=None,
-                              video=None,
-                              video_looping=False,
-                              rtsp=ip,
-                              rtsp_latency=200,
-                              usb=None,
-                              onboard=None,
-                              copy_frame=False,
-                              do_resize=False,
-                              width=width,
-                              height=height,
-                              category_num=category_num,
-                              model=modelpath,
-                              detect_time=detecttime,
-                              input_pin=input_pin,
-                              trigger_mode=trigger_mode,
-                              time_delay=time_delay,
-                              detect_mode=detect_mode,
-                              yolo_dim=size,
-                              labelsfile=labelsfile,
-                              thresh=thresh,
-                              item_list=item_list,
-                              minimum_storage_interval=minimum_storage_interval,
-                              maximum_storage_quantity=maximum_storage_quantity,
-                              enable_save_image=enable_save_image,
-                              enable_remote_cv=enable_remote_cv,
-                              enable_data_upload=enable_data_upload,
-                              server_address=server_address,
-                              host_name=host_name,
-                              conn_timeout=conn_timeout,
-                              post_timeout=post_timeout,
-                              project_id=project_id,
-                              project_name=project_name,
-                              image_file_suffix=image_file_suffix,
-                              site=site,
-                              line_id=line_id,
-                              eqp_id=eqp_id,
-                              station_id=station_id,
-                              op_id=op_id,
-                              process_stage=process_stage,
-                              model_name=model_name,
-                              model_version=model_version,
-                              model_iteration=model_iteration,
-                              model_labels=model_labels,
-                              model_type=model_type,
-                              predict_type=predict_type
-                              )
+            if camera_mode == 'USB':
+                args = ArgsHelper(image=None,
+                                  video=None,
+                                  video_looping=False,
+                                  rtsp=None,
+                                  rtsp_latency=200,
+                                  usb=cameraID,
+                                  onboard=None,
+                                  copy_frame=False,
+                                  do_resize=False,
+                                  width=width,
+                                  height=height,
+                                  category_num=category_num,
+                                  model=modelpath,
+                                  detect_time=detecttime,
+                                  input_pin=input_pin,
+                                  trigger_mode=trigger_mode,
+                                  time_delay=time_delay,
+                                  detect_mode=detect_mode,
+                                  yolo_dim=size,
+                                  labelsfile=labelsfile,
+                                  thresh=thresh,
+                                  item_list=item_list,
+                                  minimum_storage_interval=minimum_storage_interval,
+                                  maximum_storage_quantity=maximum_storage_quantity,
+                                  enable_save_image=enable_save_image,
+                                  enable_remote_cv=enable_remote_cv,
+                                  enable_data_upload=enable_data_upload,
+                                  server_address=server_address,
+                                  host_name=host_name,
+                                  conn_timeout=conn_timeout,
+                                  post_timeout=post_timeout,
+                                  project_id=project_id,
+                                  project_name=project_name,
+                                  image_file_suffix=image_file_suffix,
+                                  site=site,
+                                  line_id=line_id,
+                                  eqp_id=eqp_id,
+                                  station_id=station_id,
+                                  op_id=op_id,
+                                  process_stage=process_stage,
+                                  model_name=model_name,
+                                  model_version=model_version,
+                                  model_iteration=model_iteration,
+                                  model_labels=model_labels,
+                                  model_type=model_type,
+                                  predict_type=predict_type
+                                  )
+            elif camera_mode == 'RTSP':
+                args = ArgsHelper(image=None,
+                                  video=None,
+                                  video_looping=False,
+                                  rtsp=ip,
+                                  rtsp_latency=200,
+                                  usb=None,
+                                  onboard=None,
+                                  copy_frame=False,
+                                  do_resize=False,
+                                  width=width,
+                                  height=height,
+                                  category_num=category_num,
+                                  model=modelpath,
+                                  detect_time=detecttime,
+                                  input_pin=input_pin,
+                                  trigger_mode=trigger_mode,
+                                  time_delay=time_delay,
+                                  detect_mode=detect_mode,
+                                  yolo_dim=size,
+                                  labelsfile=labelsfile,
+                                  thresh=thresh,
+                                  item_list=item_list,
+                                  minimum_storage_interval=minimum_storage_interval,
+                                  maximum_storage_quantity=maximum_storage_quantity,
+                                  enable_save_image=enable_save_image,
+                                  enable_remote_cv=enable_remote_cv,
+                                  enable_data_upload=enable_data_upload,
+                                  server_address=server_address,
+                                  host_name=host_name,
+                                  conn_timeout=conn_timeout,
+                                  post_timeout=post_timeout,
+                                  project_id=project_id,
+                                  project_name=project_name,
+                                  image_file_suffix=image_file_suffix,
+                                  site=site,
+                                  line_id=line_id,
+                                  eqp_id=eqp_id,
+                                  station_id=station_id,
+                                  op_id=op_id,
+                                  process_stage=process_stage,
+                                  model_name=model_name,
+                                  model_version=model_version,
+                                  model_iteration=model_iteration,
+                                  model_labels=model_labels,
+                                  model_type=model_type,
+                                  predict_type=predict_type
+                                  )
+        except Exception as e:
+            print(e)
         return args
 
     def init_thread(self):
@@ -301,26 +303,27 @@ class MainWindow(QMainWindow):
         Binding signal and slot function.
         :return: None
         """
-        self.thread = DetectTensorRT(self.args)
-        self.gpio_thread = GPIOThread(self.args)
-        pwd = os.getcwd() + "/image"
-        # print(pwd)
-        # print(type(pwd))
-        max_save_num = self.args.maximum_storage_quantity
-        self.delete_file_thread = DeleteFileThread(pwd, max_save_num)
+        try:
+            self.thread = DetectTensorRT(self.args)
+            self.gpio_thread = GPIOThread(self.args)
+            pwd = os.getcwd() + "/image"
+            max_save_num = self.args.maximum_storage_quantity
+            self.delete_file_thread = DeleteFileThread(pwd, max_save_num)
 
-        self.thread.image_Signal.connect(self.videoWidget.handleDisplay)
-        self.thread.history_Signal.connect(self.historyWidget.addItem)
-        self.thread.num_Signal.connect(self.alarmWidget.errorTableWidget.changeResult)
-        self.thread.info_Signal.connect(self.showMessage)
-        self.thread.gpio_Signal.connect(self.gpio_thread.custom_output)
-        self.gpio_thread.flag_Signal.connect(self.thread.callback)
+            self.thread.image_Signal.connect(self.videoWidget.handleDisplay)
+            self.thread.history_Signal.connect(self.historyWidget.addItem)
+            self.thread.num_Signal.connect(self.alarmWidget.errorTableWidget.changeResult)
+            self.thread.info_Signal.connect(self.showMessage)
+            self.thread.gpio_Signal.connect(self.gpio_thread.custom_output)
+            self.gpio_thread.flag_Signal.connect(self.thread.callback)
 
-        self.edge_agent_worker = EdgeAgentWorker(self.args)
-        self.thread.upload_Signal.connect(self.edge_agent_worker.send)
-        self.edge_agent_worker.remote_server_status_signal.connect(self.headerWidget.changeRemoteServerStatus)
-        self.thread.start()
-        self.delete_file_thread.start()
+            self.edge_agent_worker = EdgeAgentWorker(self.args)
+            self.thread.upload_Signal.connect(self.edge_agent_worker.send)
+            self.edge_agent_worker.remote_server_status_signal.connect(self.headerWidget.changeRemoteServerStatus)
+            self.thread.start()
+            self.delete_file_thread.start()
+        except Exception as e:
+            print(e)
 
     def showMessage(self, string):
         """

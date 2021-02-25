@@ -136,11 +136,11 @@ class ModelSettingsWidget(QWidget):
         Change model.
         :return: None
         """
-        # openfile_name = QFileDialog.getOpenFileName(self, '选择模型文件', './',
-        #                                             'TensorRT model(*.trt)')
-
         openfile_name = QFileDialog.getOpenFileName(self, '选择模型文件', './',
-                                                    'TensorRT model(*.*)')
+                                                    'TensorRT model(*.trt)')
+
+        # openfile_name = QFileDialog.getOpenFileName(self, '选择模型文件', './',
+        #                                             'TensorRT model(*.*)')
 
         if openfile_name[0] != '':
             self.modelLineEdit.setText(str(openfile_name[0]).split('/')[-1])
@@ -157,13 +157,13 @@ class ModelSettingsWidget(QWidget):
         if openfile_name[0] != '':
             self.namesLineEdit.setText(str(openfile_name[0]).split('/')[-1])
             self.names_path = openfile_name[0]
-        # try:
-        with open(openfile_name[0]) as f:
-            for line in f.readlines():
-                if line != '':
-                    CUSTOM_CLASSES_LIST.append(line.rstrip('\n'))
-        # except Exception as e:
-        #     print(e)
+        try:
+            with open(openfile_name[0]) as f:
+                for line in f.readlines():
+                    if line != '':
+                        CUSTOM_CLASSES_LIST.append(line.rstrip('\n'))
+        except Exception as e:
+            print(e)
         temp = ''
         for val in CUSTOM_CLASSES_LIST:
             temp += val
@@ -178,39 +178,41 @@ class ModelSettingsWidget(QWidget):
         Load application configuration.
         :return: None
         """
-        tree = ET.parse(self.config_path)
-        root = tree.getroot()
+        try:
+            tree = ET.parse(self.config_path)
+            root = tree.getroot()
 
-        modelpath = root.find('model').find('modelpath').text
-        labelsfile = root.find('model').find('labelsfile').text
-        thresh = root.find('model').find('thresh').text
-        size = root.find('model').find('size').text
+            modelpath = root.find('model').find('modelpath').text
+            labelsfile = root.find('model').find('labelsfile').text
+            thresh = root.find('model').find('thresh').text
+            size = root.find('model').find('size').text
+            CUSTOM_CLASSES_LIST = []
+            try:
+                with open(labelsfile) as f:
+                    for line in f.readlines():
+                        if line != '':
+                            CUSTOM_CLASSES_LIST.append(line.rstrip('\n'))
+            except Exception as e:
+                print(e)
+            temp = ''
+            for val in CUSTOM_CLASSES_LIST:
+                temp += val
+                temp += '、'
+            temp = temp[0:-1]
 
-        CUSTOM_CLASSES_LIST = []
-        # try:
-        with open(labelsfile) as f:
-            for line in f.readlines():
-                if line != '':
-                    CUSTOM_CLASSES_LIST.append(line.rstrip('\n'))
-        # except Exception as e:
-        #     print(e)
-        temp = ''
-        for val in CUSTOM_CLASSES_LIST:
-            temp += val
-            temp += '、'
-        temp = temp[0:-1]
+            self.dragListWidget.initItems(CUSTOM_CLASSES_LIST)
+            self.modelLineEdit.setText(modelpath.split('/')[-1])
+            self.namesLineEdit.setText(labelsfile.split('/')[-1])
+            self.namesLineEdit_.setText(temp)
+            self.threshSlider.setValue(float(thresh) * 100)
+            self.sizeComboBox.setCurrentText(size)
 
-        self.dragListWidget.initItems(CUSTOM_CLASSES_LIST)
-        self.modelLineEdit.setText(modelpath.split('/')[-1])
-        self.namesLineEdit.setText(labelsfile.split('/')[-1])
-        self.namesLineEdit_.setText(temp)
-        self.threshSlider.setValue(float(thresh) * 100)
-        self.sizeComboBox.setCurrentText(size)
-
-        self.model_path = modelpath
-        self.names_path = labelsfile
-        self.thresh = thresh
-        self.category_num = len(CUSTOM_CLASSES_LIST)
+            self.model_path = modelpath
+            self.names_path = labelsfile
+            self.thresh = thresh
+            self.category_num = len(CUSTOM_CLASSES_LIST)
+        except Exception as e:
+            print(e)
 
     def saveAction(self):
         """

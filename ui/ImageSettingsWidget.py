@@ -92,36 +92,42 @@ class ImageSettingsWidget(QWidget):
         Load application configuration.
         :return: None
         """
-        tree = ET.parse(self.config_path)
-        root = tree.getroot()
+        try:
+            tree = ET.parse(self.config_path)
+            root = tree.getroot()
 
-        enable = bool(int(root.find('image').find('enable').text))
-        self.enableSwitchButton.setChecked(enable)
+            enable = bool(int(root.find('image').find('enable').text))
+            self.enableSwitchButton.setChecked(enable)
 
-        minimumstorageinterval = root.find('image').find('minimumstorageinterval').text
-        self.minimumStorageIntervalSpinBox.setValue(int(minimumstorageinterval))
+            minimumstorageinterval = root.find('image').find('minimumstorageinterval').text
+            self.minimumStorageIntervalSpinBox.setValue(int(minimumstorageinterval))
 
-        maximumstoragequantity = root.find('image').find('maximumstoragequantity').text
-        self.maximumStorageQuantitySpinBox.setValue(int(maximumstoragequantity))
+            maximumstoragequantity = root.find('image').find('maximumstoragequantity').text
+            self.maximumStorageQuantitySpinBox.setValue(int(maximumstoragequantity))
+        except Exception as e:
+            print(e)
 
     def saveAction(self):
         """
         Slot function to save user parameters.
         :return: None
         """
-        tree = ET.parse(self.config_path)
-        root = tree.getroot()
+        try:
+            tree = ET.parse(self.config_path)
+            root = tree.getroot()
 
-        minimumstorageinterval = self.minimumStorageIntervalSpinBox.value()
-        root.find('image').find('minimumstorageinterval').text = str(minimumstorageinterval)
+            minimumstorageinterval = self.minimumStorageIntervalSpinBox.value()
+            root.find('image').find('minimumstorageinterval').text = str(minimumstorageinterval)
 
-        maximumstoragequantity = self.maximumStorageQuantitySpinBox.value()
-        root.find('image').find('maximumstoragequantity').text = str(maximumstoragequantity)
+            maximumstoragequantity = self.maximumStorageQuantitySpinBox.value()
+            root.find('image').find('maximumstoragequantity').text = str(maximumstoragequantity)
 
-        enable = self.enableSwitchButton.checked
-        root.find('image').find('enable').text = "1" if enable else "0"
+            enable = self.enableSwitchButton.checked
+            root.find('image').find('enable').text = "1" if enable else "0"
 
-        tree.write(self.config_path)
+            tree.write(self.config_path)
+        except Exception as e:
+            print(e)
 
     def showEvent(self, QShowEvent):
         """

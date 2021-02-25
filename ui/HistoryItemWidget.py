@@ -77,8 +77,8 @@ class HistoryItemWidget(QWidget):
         """
         return QSize(200, 150)
 
-    def mousePressEvent(self, a0: QMouseEvent):
-        pass
+    # def mousePressEvent(self, a0: QMouseEvent):
+    #     pass
 
 
 if __name__ == '__main__':

@@ -41,9 +41,6 @@ class SensorFactory(GstRtspServer.RTSPMediaFactory):
     # global camera
     def __init__(self, **properties):
         super(SensorFactory, self).__init__(**properties)
-        # self.cap = cv2.VideoCapture(0)
-        # self.cap = cv2.VideoCapture("rtsp://....")
-        # self.cap = camera
         self.number_frames = 0
         self.fps = 30
         self.duration = 1 / self.fps * Gst.SECOND  # duration of a frame in nanoseconds
@@ -145,7 +142,6 @@ class DetectTensorRT(QThread):
         if not self.gpio_flag:
             self.gpio_flag = True
             self.detect_start_time = time.time()
-        # print("开始检测")
 
     def load_edge_eye(self):
         if not self.enable_data_upload:
@@ -196,8 +192,6 @@ class DetectTensorRT(QThread):
         :param img:
         :return: None
         """
-        # if not self.enable_data_upload:
-        #     return
         image_name = current_time + "_" + str(random.randint(1000, 9999)) + '.jpg'
         self.inference_box_info = self.inference_box_info._replace(image_name=image_name)
         self.inference_box_info = self.inference_box_info._replace(box_seq="0")
@@ -227,7 +221,6 @@ class DetectTensorRT(QThread):
         :param conf:
         :return: None
         """
-        # 这里有个性能妥协
         self.history_Signal.emit(history_image, label, current_time, str(box))
         self.num_Signal.emit(label)
         self.info_Signal.emit(str(box) + '\t' + str(conf) + '\t' + str(label))
@@ -333,79 +326,6 @@ class DetectTensorRT(QThread):
             fps = curr_fps if fps == 0.0 else (fps * 0.95 + curr_fps * 0.05)
             tic = toc
             # time.sleep(0.005)
-
-    # def loop_and_detect(self):
-    #     detect_labels = [item.category for item in self.item_list]  # 所有需要检测的标签
-    #     fps = 0.0
-    #     tic = time.time()
-    #     while True:
-    #         img = self.cam.read()
-    #         if img is None:
-    #             break
-    #         boxes, confs, clss = self.trt_yolo.detect(img, self.conf_th)  # 模型输出结果
-    #
-    #         # 过滤标签
-    #         if len(boxes) > 0:
-    #             current_labels = [self.cls_dict[i] for i in clss]  # 当前所有标签，str
-    #             index = [i for i in range(len(current_labels)) if current_labels[i] in detect_labels]
-    #             boxes = [list(boxes[i]) for i in index]
-    #             confs = [confs[i] for i in index]
-    #             clss = [clss[i] for i in index]
-    #
-    #         # 转换为ModelOutputItem
-    #         model_output_list = [
-    #             ModelOutputItem(box=boxes[i], confidence=confs[i], cls=clss[i], cls_dict=self.cls_dict)
-    #             for i in range(len(boxes))]
-    #
-    #         # 在此假设检测标签不重复，模型输出标签可以重复
-    #         for modelOutputItem in model_output_list:
-    #             label = modelOutputItem.label
-    #             box = modelOutputItem.box
-    #             conf = modelOutputItem.confidence
-    #             cls = modelOutputItem.cls
-    #             if label in self.item_dict.keys():  # 检测出来的标签
-    #                 self.info_Signal.emit(str(box) + '\t' + str(conf) + '\t' + str(label))
-    #                 # 持续检测模式
-    #                 if self.args.detect_mode == "continuous detect":
-    #                     # 在此假设检测标签不重复（事实上也是如此），模型输出标签可以重复
-    #                     self.item_dict[label].allow_alarm(label, conf)
-    #                 # GPIO触发模式
-    #                 else:
-    #                     if self.gpio_flag:
-    #                         # 在此假设检测标签不重复（事实上也是如此），模型输出标签可以重复
-    #                         self.item_dict[label].allow_alarm(label, conf)
-    #                         if time.time() - self.detect_start_time > self.args.detect_time:
-    #                             self.gpio_flag = False
-    #                     else:
-    #                         # after gpio flag change 1 to 0, reset item
-    #                         for item in self.item_list:
-    #                             item.reset()
-    #
-    #         current_time = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
-    #         for item in self.item_list:
-    #             if item.alarm:
-    #                 self.num_Signal.emit(item.category)
-    #                 self.gpio_Signal.emit(self.item_dict[label])
-    #                 item.reset()
-    #         raw_image = copy.deepcopy(img)
-    #
-    #         img = self.vis.draw_bboxes(img, boxes, confs, clss)
-    #         img = show_fps(img, fps)
-    #
-    #         # save image?
-    #         if self.enable_save_image and time.time() - self.save_start_time > self.args.minimum_storage_interval:
-    #             cv2.imwrite('./image/' + current_time + '.jpg', img)
-    #             self.save_start_time = time.time()  # update last-save-image time
-    #         self.image_Signal.emit(img)
-    #         # remote cv?
-    #         if self.enable_remote_cv:
-    #             global global_image
-    #             global_image = copy.deepcopy(img)
-    #         toc = time.time()
-    #         curr_fps = 1.0 / (toc - tic)
-    #         # 计算fps数的指数衰减平均值
-    #         fps = curr_fps if fps == 0.0 else (fps * 0.95 + curr_fps * 0.05)
-    #         tic = toc
 
     def run(self):
         try:

@@ -44,23 +44,29 @@ class RemoteCVSettingsWidget(QWidget):
         Load application configuration.
         :return: None
         """
-        tree = ET.parse(self.configPath)
-        root = tree.getroot()
+        try:
+            tree = ET.parse(self.configPath)
+            root = tree.getroot()
 
-        enable = bool(int(root.find('remotecv').find('enable').text))
-        self.enableSwitchButton.setChecked(enable)
+            enable = bool(int(root.find('remotecv').find('enable').text))
+            self.enableSwitchButton.setChecked(enable)
+        except Exception as e:
+            print(e)
 
     def saveAction(self):
         """
         Slot function to save user parameters.
         :return: None
         """
-        tree = ET.parse(self.configPath)
-        root = tree.getroot()
+        try:
+            tree = ET.parse(self.configPath)
+            root = tree.getroot()
 
-        enable = self.enableSwitchButton.checked
-        root.find('remotecv').find('enable').text = "1" if enable else "0"
-        tree.write(self.configPath)
+            enable = self.enableSwitchButton.checked
+            root.find('remotecv').find('enable').text = "1" if enable else "0"
+            tree.write(self.configPath)
+        except Exception as e:
+            print(e)
 
     def showEvent(self, QShowEvent):
         """
