@@ -78,7 +78,7 @@
         </item>
     </detect_items>
     <app>
-        <auto_start>0</auto_start>
+        <auto_start>1</auto_start>
         <application_title>S01 AI ...</application_title>
     </app>
 </appsettings>
