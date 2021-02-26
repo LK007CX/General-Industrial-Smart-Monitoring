@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QWidget, QListWidget, QPushButton, QVBoxLayout, \
-    QHBoxLayout, QListWidgetItem, QMessageBox, QApplication
+    QHBoxLayout, QListWidgetItem, QMessageBox, QApplication, QAbstractItemView
 
 from ui.DetectHeaderWidget import DetectHeaderWidget
 from ui.ItemWidget import ItemWidget
@@ -22,6 +22,7 @@ class DetectSettingsWidget(QWidget):
 
         self.headerWidget = DetectHeaderWidget()
         self.detectListWidget = QListWidget()
+        self.detectListWidget.setDragDropMode(QAbstractItemView.InternalMove)
         self.addPushButton = QPushButton("添加类别")
         self.deleteAllPushButton = QPushButton("删除全部类别")
         self.saveAllPushButton = QPushButton("保存更改")

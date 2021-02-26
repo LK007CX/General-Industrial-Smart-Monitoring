@@ -24,6 +24,8 @@ class DragListWidget(QListWidget):
         self._rubberPos = None
         self._rubberBand = QRubberBand(QRubberBand.Rectangle, self)
 
+        # self.setDragDropMode(self.InternalMove)
+
     def startDrag(self, supportedActions):
         """
         Preview renderings when dragging.

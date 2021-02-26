@@ -14,7 +14,7 @@ class Item(object):
 
     def allow_alarm(self, label, conf):
         """
-        Allow alarm?
+        Allow alarm ?
         :param label: label
         :param conf: bool
         :return:

@@ -4,7 +4,7 @@ import sys
 
 import cv2
 from PyQt5.QtCore import pyqtSignal, QSize, Qt
-from PyQt5.QtGui import QImage, QPixmap, QMouseEvent
+from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QWidget, QListWidgetItem, QLabel, QVBoxLayout, \
     QHBoxLayout, QApplication
 
