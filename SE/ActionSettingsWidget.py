@@ -34,12 +34,10 @@ class DetectSettingsWidget(QWidget):
         Initialize UI.
         :return: None
         """
-
         """slots"""
         self.addPushButton.clicked.connect(self.addDetectItem)
         self.deleteAllPushButton.clicked.connect(self.doClearItem)
         self.saveAllPushButton.clicked.connect(self.doSaveItem)
-
         """hBoxLayout"""
         hBoxLayout = QHBoxLayout()
         hBoxLayout.addStretch()
@@ -70,6 +68,7 @@ class DetectSettingsWidget(QWidget):
         item.setSizeHint(QSize(200, 50))
         widget = ItemWidget(self.class_list, item)
         widget.itemDeleted.connect(self.doDeleteItem)
+        widget.setIndex(self.detectListWidget.count())
         self.detectListWidget.setItemWidget(item, widget)
 
     def doDeleteItem(self, item):
@@ -85,7 +84,7 @@ class DetectSettingsWidget(QWidget):
 
     def doClearItem(self):
         """
-        Clear all item  in the list widdet.
+        Clear all item in the list widdet.
         :return: None
         """
         for _ in range(self.detectListWidget.count()):
@@ -98,6 +97,7 @@ class DetectSettingsWidget(QWidget):
         Save item to application configuration.
         :return: None
         """
+        self.resetIndex()
         try:
             tree = ET.parse(self.config_path)
             root = tree.getroot()
@@ -108,48 +108,34 @@ class DetectSettingsWidget(QWidget):
                     detect.remove(action)
 
             """check for duplicate settings(class and output pin)"""
-            local_item_class_list = []
-            local_output_pin_list = []
-            for _ in range(self.detectListWidget.count()):
-                item = self.detectListWidget.item(_)
-                widget = self.detectListWidget.itemWidget(item)
-                category = str(widget.classComboBox.currentText())
-                output_pin = str(widget.outputPinComboBox.currentText())
-                if category in local_item_class_list:
-                    QMessageBox.warning(self, "警告", "检测标签重复配置！\n单击Yes后，请重新配置。", QMessageBox.Yes, QMessageBox.Yes)
-                    return
-                if output_pin in local_output_pin_list:
-                    QMessageBox.warning(self, "警告", "输出引脚重复配置！\n单击Yes后，请重新配置。", QMessageBox.Yes, QMessageBox.Yes)
-                    return
-                local_item_class_list.append(category)
-                local_output_pin_list.append(output_pin)
+            pass
 
             """add item to application configuration"""
             for _ in range(self.detectListWidget.count()):
+
                 item = self.detectListWidget.item(_)
                 widget = self.detectListWidget.itemWidget(item)
 
+                index = str(widget.indexLabel.text())
                 category = str(widget.classComboBox.currentText())
-                frames = str(widget.confirmFramesSpinBox.value())
+                frames = str(widget.framesSpinBox.value())
+                time = str(widget.timeSpinBox.value())
                 thresh = str(widget.threshDoubleSpinBox.value())
-                pin = str(widget.outputPinComboBox.currentText())
-                time = str(widget.outputTimeDoubleSpinBox.value())
-                mode = str(widget.outputModeComboBox.currentText())
+                coordinate = str(widget.coordinateLabel.text())
 
                 action = ET.Element('item')
+                index_node = ET.SubElement(action, 'index')
+                index_node.text = index
                 category_node = ET.SubElement(action, 'category')
                 category_node.text = category
                 frames_node = ET.SubElement(action, 'frames')
                 frames_node.text = frames
-                thresh_node = ET.SubElement(action, 'thresh')
-                thresh_node.text = thresh
-                pin_node = ET.SubElement(action, 'pin')
-                pin_node.text = pin
                 time_node = ET.SubElement(action, 'time')
                 time_node.text = time
-                mode_node = ET.SubElement(action, 'mode')
-                mode_node.text = "0" if mode == "低脉冲" else "1"
-
+                thresh_node = ET.SubElement(action, 'thresh')
+                thresh_node.text = thresh
+                coordinate_node = ET.SubElement(action, 'coordinate')
+                coordinate_node.text = coordinate
                 detect = root.find('detect_items')
                 detect.extend((action,))
 
@@ -202,23 +188,22 @@ class DetectSettingsWidget(QWidget):
             tree = ET.parse(self.config_path)
             root = tree.getroot()
             for action in root.find('detect_items').findall('item'):
+                index = action.find('index').text
                 category = action.find('category').text
                 frames = int(action.find('frames').text)
-                thresh = float(action.find('thresh').text)
-                pin = str(action.find('pin').text)
                 time = float(action.find('time').text)
-                mode = int(action.find('mode').text)
-
+                thresh = float(action.find('thresh').text)
+                coordinate = action.find('coordinate').text
                 item = QListWidgetItem(self.detectListWidget)
                 item.setSizeHint(QSize(200, 50))
-                widget = ItemWidget(self.class_list, self.output_pin_list, item)
+                widget = ItemWidget(self.class_list, item)
                 widget.itemDeleted.connect(self.doDeleteItem)
+                widget.indexLabel.setText(index)
                 widget.classComboBox.setCurrentText(category)
                 widget.framesSpinBox.setValue(frames)
+                widget.timeSpinBox.setValue(time)
                 widget.threshDoubleSpinBox.setValue(thresh)
-                widget.outputPinComboBox.setCurrentText(pin)
-                widget.outputTimeDoubleSpinBox.setValue(time)
-                widget.outputModeComboBox.setCurrentIndex(mode)
+                widget.coordinateLabel.setText(coordinate)
                 self.detectListWidget.setItemWidget(item, widget)
         except Exception as e:
             print(e)
@@ -231,10 +216,16 @@ class DetectSettingsWidget(QWidget):
     #     """
     #     self.load_config()
 
+    def resetIndex(self):
+        for i in range(self.detectListWidget.count()):
+            item = self.detectListWidget.item(i)
+            widget = self.detectListWidget.itemWidget(item)
+            widget.setIndex(str(i+1))
+
 
 if __name__ == '__main__':
     class_list_ = ['person', 'ok', 'ng']
     app = QApplication(sys.argv)
-    win = DetectSettingsWidget('../appconfig/appconfig.xml')
+    win = DetectSettingsWidget('../appconfig/appconfig_se.xml')
     win.show()
     sys.exit(app.exec_())

@@ -1,5 +1,6 @@
 import cv2
 
+
 def on_mouse(event, img, x, y, flags):
     rect_start = (0, 0)
     rect_end = (0, 0)
@@ -9,6 +10,7 @@ def on_mouse(event, img, x, y, flags):
     elif event == cv2.EVENT_LBUTTONUP:
         rect_end = (x, y)
     cv2.rectangle(img, rect_start, rect_end, (0, 255, 0), 2)
+
 
 img = cv2.imread("../icon/back.png")
 cv2.namedWindow('test')

@@ -52,30 +52,6 @@
     </remotecv>
     <detect_items>
         <temp>leave this node alone...</temp>
-        <item>
-            <category>tvmonitor</category>
-            <frames>50</frames>
-            <thresh>0.1</thresh>
-            <pin>15</pin>
-            <time>0.05</time>
-            <mode>0</mode>
-        </item>
-        <item>
-            <category>person</category>
-            <frames>50</frames>
-            <thresh>0.1</thresh>
-            <pin>13</pin>
-            <time>0.05</time>
-            <mode>0</mode>
-        </item>
-        <item>
-            <category>chair</category>
-            <frames>50</frames>
-            <thresh>0.1</thresh>
-            <pin>16</pin>
-            <time>0.05</time>
-            <mode>0</mode>
-        </item>
     </detect_items>
     <app>
         <auto_start>1</auto_start>

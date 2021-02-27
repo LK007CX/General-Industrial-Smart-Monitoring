@@ -23,7 +23,7 @@ class ItemWidget(QWidget):
         self.framesSpinBox = QSpinBox(objectName='confirmFrames')  # 确认帧数
         self.timeSpinBox = QSpinBox(objectName='confirmTime')  # 确认时间
         self.threshDoubleSpinBox = QDoubleSpinBox(objectName='threshDoubleSpinBox')  # 置信度
-        self.coordinateLabel = QLabel("(100, 100) (100, 100)", objectName="coordinateLabel")
+        self.coordinateLabel = QLabel("[None, None] [None, None]", objectName="coordinateLabel")
         self.ROIToolButton = QToolButton(objectName="ROIToolButton")
         self.deleteToolButton = QToolButton(objectName='deleteToolButton')  # 删除按钮
         self.init_ui()
@@ -44,6 +44,7 @@ class ItemWidget(QWidget):
         self.deleteToolButton.setIconSize(QSize(20, 20))
         """slots"""
         self.deleteToolButton.clicked.connect(self.doDeleteItem)
+        self.ROIToolButton.clicked.connect(self.editROI)
         """fixed size"""
         self.indexLabel.setFixedWidth(50)
         self.classComboBox.setFixedWidth(100)
@@ -99,7 +100,7 @@ class ItemWidget(QWidget):
         cv2.destroyAllWindows()
 
     def onMouseAction(self, event, x, y, flags, param):
-        position1, position2 = None, None
+        global position1, position2
 
         image = self.img.copy()
 
@@ -114,15 +115,11 @@ class ItemWidget(QWidget):
             position2 = (x, y)  # 获取鼠标的最终位置
             cv2.rectangle(image, position1, position2, (0, 0, 255), 3)  # 画出最终的矩形
             cv2.imshow('image', image)
+            self.coordinateLabel.setText("[" + str(position1[0]) + ", " + str(position1[1]) + "]" + " [" + str(position2[0]) + ", " + str(position2[1]) + "]")
+            cv2.destroyAllWindows()
 
-            min_x = min(position1[0], position2[0])  # 获得最小的坐标，因为可以由下往上拖动选定框
-            min_y = min(position1[1], position2[1])
-            width = abs(position1[0] - position2[0])  # 切割坐标
-            height = abs(position1[1] - position2[1])
-
-            cut_img = img[min_y:min_y + height, min_x:min_x + width]
-            cv2.imshow('Cut', cut_img)
-
+    def setIndex(self, index):
+        self.indexLabel.setText(str(index))
 
 
 if __name__ == '__main__':
