@@ -13,8 +13,8 @@ class InputSettingsWidget(QWidget):
 
     def __init__(self, config_path, input_pin_list, *args, **kwargs):
         super(InputSettingsWidget, self).__init__(*args, **kwargs)
-        self.inputPinList = input_pin_list
 
+        self.inputPinList = input_pin_list
         self.output_mode_list = ["低脉冲", "高脉冲"]
         self.input_mode_label = QLabel("触发类型")
 
