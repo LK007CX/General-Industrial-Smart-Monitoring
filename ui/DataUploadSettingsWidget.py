@@ -343,6 +343,8 @@ class DataUploadSettingsWidget(QWidget):
 
             predict_type = root.find('dataupload').find('predict_type').text
             self.predictTypeComboBox.setCurrentText(predict_type)
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             """Here will emit a signal."""
             print(e)
@@ -425,6 +427,8 @@ class DataUploadSettingsWidget(QWidget):
             root.find('dataupload').find('predict_type').text = predict_type.split('.')[0]
 
             tree.write(self.config_path)
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             print(e)
 

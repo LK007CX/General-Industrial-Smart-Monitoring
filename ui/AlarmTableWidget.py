@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
+import sys
 import xml.etree.ElementTree as ET
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidget, QHeaderView, QAbstractItemView, \
-    QTableWidgetItem
+    QTableWidgetItem, QApplication
 
 
 class AlarmTableWidget(QTableWidget):
@@ -14,6 +15,7 @@ class AlarmTableWidget(QTableWidget):
         self.row_count = row_count
         self.category_list = []
         self.configPath = config_path
+        self.init_ui()
         self.init_data()
 
     def init_ui(self):
@@ -55,10 +57,14 @@ class AlarmTableWidget(QTableWidget):
             root = tree.getroot()
             for action in root.find('detect_items').findall('item'):
                 category = action.find('category').text
+
+                print(category)
                 self.category_list.append(category)
             self.setRowCount(len(self.category_list))
-        except Exception as e:
+        except FileNotFoundError:
             """Here will emit a signal."""
+            print("No config file found.")
+        except Exception as e:
             print(e)
         for i in range(len(self.category_list)):
             item0 = QTableWidgetItem(self.category_list[i])
@@ -81,3 +87,10 @@ class AlarmTableWidget(QTableWidget):
             item = QTableWidgetItem(str(num))
             item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.setItem(index, 1, item)
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    win = AlarmTableWidget('../appconfig/appconfig.xml', 5, 2)
+    win.show()
+    sys.exit(app.exec_())

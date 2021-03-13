@@ -139,9 +139,6 @@ class ModelSettingsWidget(QWidget):
         openfile_name = QFileDialog.getOpenFileName(self, '选择模型文件', './',
                                                     'TensorRT model(*.trt)')
 
-        # openfile_name = QFileDialog.getOpenFileName(self, '选择模型文件', './',
-        #                                             'TensorRT model(*.*)')
-
         if openfile_name[0] != '':
             self.modelLineEdit.setText(str(openfile_name[0]).split('/')[-1])
             self.model_path = openfile_name[0]
@@ -162,6 +159,8 @@ class ModelSettingsWidget(QWidget):
                 for line in f.readlines():
                     if line != '':
                         CUSTOM_CLASSES_LIST.append(line.rstrip('\n'))
+        except FileNotFoundError:
+            print("No names file found.")
         except Exception as e:
             print(e)
         temp = ''
@@ -192,6 +191,8 @@ class ModelSettingsWidget(QWidget):
                     for line in f.readlines():
                         if line != '':
                             CUSTOM_CLASSES_LIST.append(line.rstrip('\n'))
+            except FileNotFoundError:
+                print("No names file found.")
             except Exception as e:
                 print(e)
             temp = ''
@@ -211,6 +212,8 @@ class ModelSettingsWidget(QWidget):
             self.names_path = labelsfile
             self.thresh = thresh
             self.category_num = len(CUSTOM_CLASSES_LIST)
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             print(e)
 
@@ -228,6 +231,8 @@ class ModelSettingsWidget(QWidget):
             root.find('model').find('size').text = self.sizeComboBox.currentText()
             root.find('model').find('category_num').text = str(self.category_num)
             tree.write(self.config_path)
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             print(e)
 

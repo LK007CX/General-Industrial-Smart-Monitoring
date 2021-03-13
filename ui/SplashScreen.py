@@ -13,7 +13,7 @@ class SplashScreen(QSplashScreen):
 
         self.movie = QMovie('icon/cap.png')
 
-        self.GIMSLabel = QLabel("GIMS", objectName="GIMSLabel")
+        self.GIMSLabel = QLabel("GISM", objectName="GIMSLabel")
         self.versionLabel = QLabel("V1.0.0", objectName="versionLabel")
         self.fullNameLabel = QLabel("General Industrial Smart Monitor", objectName="fullNameLabel")
         self.logoLabel = QLabel(objectName="logoLabel")

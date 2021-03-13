@@ -123,6 +123,8 @@ class CameraSettingsWidget(QWidget):
             width = root.find('camera').find('width').text
             height = root.find('camera').find('height').text
             self.resolutionComboBox.setCurrentText(width + '*' + height)
+        except FileNotFoundError:
+            print("No config file ")
         except Exception as e:
             """Here will emit a signal."""
             print(e)
@@ -151,6 +153,8 @@ class CameraSettingsWidget(QWidget):
             height = self.resolutionComboBox.currentText().split('*')[1]
             root.find('camera').find('height').text = height
             tree.write(self.config_path)
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             """Here will emit a signal."""
             print(e)

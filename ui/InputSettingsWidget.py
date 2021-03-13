@@ -140,6 +140,8 @@ class InputSettingsWidget(QWidget):
 
             detecttime = root.find('input').find('detecttime').text
             self.detectTimeSpinBox.setValue(int(detecttime))
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             print(e)
 
@@ -172,6 +174,8 @@ class InputSettingsWidget(QWidget):
             root.find('input').find('detecttime').text = str(detecttime)
 
             tree.write(self.configPath)
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             print(e)
 

@@ -1,6 +1,7 @@
-sudo groupadd docker
-sudo gpasswd -a auo docker
-sudo service docker restart
+# mkdir /home/edit/app/gism/model
+mkdir /home/edit/app/
+mkdir /home/edit/app/gism/
+mkdir /home/edit/app/gism/model
 
 # persist the app config
 docker volume rm appconfig
@@ -11,7 +12,7 @@ docker volume rm image
 docker volume create image
 
 # load gism docker image
-docker load < gism-v1.5.img
+docker load < gism-v1.5.1.img
 
 # make desktop icon
 path=GISM.desktop

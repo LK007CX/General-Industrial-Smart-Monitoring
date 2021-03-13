@@ -50,6 +50,8 @@ class RemoteCVSettingsWidget(QWidget):
 
             enable = bool(int(root.find('remotecv').find('enable').text))
             self.enableSwitchButton.setChecked(enable)
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             print(e)
 
@@ -65,6 +67,8 @@ class RemoteCVSettingsWidget(QWidget):
             enable = self.enableSwitchButton.checked
             root.find('remotecv').find('enable').text = "1" if enable else "0"
             tree.write(self.configPath)
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             print(e)
 

@@ -52,3 +52,20 @@ GPIO引脚冲突问题
 数据上报
 
 设置界面输入数据校验（IP地址、端口号）
+
+
+2021年3月12日更新：
+
+install_gism.sh:
+自动建立/home/edit/app/gism/model/文件夹
+
+docker_permission.sh:
+docker自动加入用户群组
+
+run_gism.sh:
+去除sudo
+
+SystemSettingsTabWidget.py:
+更新输入输出引脚
+
+待加入断线重连机制

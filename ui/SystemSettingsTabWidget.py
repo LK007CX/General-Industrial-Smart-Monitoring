@@ -21,8 +21,8 @@ class SystemSettingsTabWidget(QTabWidget):
     def __init__(self, config_path, *args, **kwargs):
         super(SystemSettingsTabWidget, self).__init__(*args, **kwargs)
 
-        input_pin_list_ = ['3', '5', '7', '8']
-        output_pin_list_ = ['13', '15', '16', '18']
+        input_pin_list_ = ['7', '11', '12', '13']
+        output_pin_list_ = ['15', '16', '18', '19']
 
         self.cameraSettingsTab = CameraSettingsWidget(config_path)
         self.inputSettingsTab = InputSettingsWidget(config_path, input_pin_list_)

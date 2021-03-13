@@ -9,6 +9,7 @@ file or an image file as input.
 import logging
 import subprocess
 import threading
+import argparse
 
 import cv2
 import numpy as np
@@ -230,6 +231,12 @@ class Camera():
 
         if self.video_file:
             _, img = self.cap.read()
+            if not _:
+                self.cap = None
+                self.release()
+                import time
+                time.sleep(1)
+                self._open()
             if img is None:
                 logging.info('Camera: reaching end of video file')
                 if self.video_looping:
@@ -257,3 +264,19 @@ class Camera():
 
     def __del__(self):
         self.release()
+
+
+if __name__ == '__main__':
+    desc = "add camera args"
+    parser = argparse.ArgumentParser(description=desc)
+    add_camera_args(parser)
+    args = parser.parse_args()
+    camera = Camera(args)
+    if not camera.isOpened():
+        raise SystemExit('ERROR: failed to open camera!')
+    while True:
+        img = camera.read()
+        if img is None:
+            break
+        cv2.imshow("camera", img)
+        cv2.waitKey(10)

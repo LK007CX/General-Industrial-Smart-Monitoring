@@ -157,6 +157,8 @@ class DetectSettingsWidget(QWidget):
             tree.write(self.config_path)
             self.pretty_xml(root, '\t', '\n')
             tree.write(self.config_path)
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             print(e)
 
@@ -187,10 +189,13 @@ class DetectSettingsWidget(QWidget):
         root = tree.getroot()
         labelsfile = root.find('model').find('labelsfile').text
         CUSTOM_CLASSES_LIST = []
-        with open(labelsfile) as f:
-            for line in f.readlines():
-                if line != '':
-                    CUSTOM_CLASSES_LIST.append(line.rstrip('\n'))
+        try:
+            with open(labelsfile) as f:
+                for line in f.readlines():
+                    if line != '':
+                        CUSTOM_CLASSES_LIST.append(line.rstrip('\n'))
+        except FileNotFoundError:
+            print("No names file found.")
         return CUSTOM_CLASSES_LIST
 
     def load_config(self):
@@ -221,6 +226,8 @@ class DetectSettingsWidget(QWidget):
                 widget.outputTimeDoubleSpinBox.setValue(time)
                 widget.outputModeComboBox.setCurrentIndex(mode)
                 self.detectListWidget.setItemWidget(item, widget)
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             print(e)
 

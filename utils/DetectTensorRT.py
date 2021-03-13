@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
+import cgitb
 import copy
 import datetime
 import os
@@ -14,6 +15,7 @@ import pycuda.autoinit  # This is needed for initializing CUDA driver
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
+# from ui.MainWindow import restart
 from utils.ArgsHelper import ArgsHelper
 from utils.Item import Item
 from utils.ModelOutputItem import ModelOutputItem
@@ -31,6 +33,8 @@ from gi.repository import Gst, GstRtspServer
 sys.path.append('/opt/nvidia/jetson-gpio/lib/python/')
 sys.path.append('/opt/nvidia/jetson-gpio/lib/python/Jetson/GPIO')
 import Jetson.GPIO as GPIO
+
+from optparse import OptionParser
 
 _width = '1280'
 _height = '720'
@@ -230,18 +234,22 @@ class DetectTensorRT(QThread):
         self.gpio_Signal.emit(self.item_dict[label])
 
     def load_model(self):
-        # self.status_Signal.emit("正在读取配置", 0)
         if self.args.category_num <= 0:
             raise SystemExit('ERROR: bad category_num (%d)!' % self.args.category_num)
         if not os.path.isfile(self.args.model):
             raise SystemExit('ERROR: file (model/%s.trt) not found!' % self.args.model)
-
-        # self.status_Signal.emit("正在打开相机", 20)
         self.cam = Camera(self.args)
         if not self.cam.isOpened():
-            raise SystemExit('ERROR: failed to open camera!')
+            """program restart section"""
+            parser = OptionParser(usage="usage:%prog [optinos] filepath")
+            parser.add_option("-t", "--twice", type="int",
+                              dest="twice", default=1, help="运行次数")
+            options, _ = parser.parse_args()
+            cgitb.enable(1, None, 5, '')
 
-        # self.cls_dict = get_cls_dict(self.args.category_num)
+            restart(str(options.twice + 1))
+            # raise SystemExit('ERROR: failed to open camera!')
+
         self.cls_dict = get_cls_dict(self.args.labelsfile)
         yolo_dim = self.args.yolo_dim.split('*')[-1]
         if 'x' in yolo_dim:
@@ -253,11 +261,8 @@ class DetectTensorRT(QThread):
             h = w = int(yolo_dim)
         if h % 32 != 0 or w % 32 != 0:
             raise SystemExit('ERROR: bad yolo_dim (%s)!' % yolo_dim)
-        # self.status_Signal.emit("正在加载模型", 40)
-        # self.trt_yolo = TrtYOLO(self.args.model, (h, w), self.args.category_num)
         self.trt_yolo = TrtYOLO(self.args.model, (h, w), self.args.category_num, cuda_ctx=pycuda.autoinit.context)
         self.vis = BBoxVisualization(self.cls_dict)
-        # self.status_Signal.emit("模型加载完毕", 80)
 
     def loop_and_detect(self):
         detect_labels = [item.category for item in self.item_list]  # 所有需要检测的标签
@@ -267,6 +272,11 @@ class DetectTensorRT(QThread):
             img = self.cam.read()
             if img is None:
                 break
+            # if img is None:
+            #     self.cam = None
+            #     self.cam = Camera(self.args)
+            #     if not self.cam.isOpened():
+            #         print('ERROR: failed to open camera!')
             boxes, confs, clss = self.trt_yolo.detect(img, self.conf_th)  # 模型输出结果
 
             # 过滤标签

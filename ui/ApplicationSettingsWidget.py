@@ -80,6 +80,8 @@ class ApplicationSettingWidget(QWidget):
             self.autoStartSwitchButton.setChecked(enable)
 
             self.applicationTitleLineEdit.setText(application_title)
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             """Here will emit a signal."""
             print(e)
@@ -104,6 +106,8 @@ class ApplicationSettingWidget(QWidget):
             root.find('app').find('auto_start').text = "1" if auto_start else "0"
             root.find('app').find('application_title').text = self.applicationTitleLineEdit.text()
             tree.write(self.config_path)
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             """Here will emit a signal."""
             print(e)

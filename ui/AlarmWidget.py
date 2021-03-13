@@ -12,7 +12,7 @@ class AlarmWidget(QWidget):
 
     def __init__(self, config_path, *args, **kwargs):
         super(AlarmWidget, self).__init__(*args, **kwargs)
-        self.errorTableWidget = AlarmTableWidget(config_path, objectName='errorTableWidget')
+        self.alarmTableWidget = AlarmTableWidget(config_path, objectName='errorTableWidget')
         self.init_ui()
 
     def init_ui(self):
@@ -22,7 +22,7 @@ class AlarmWidget(QWidget):
         """
         layout = QVBoxLayout(spacing=0)
         layout.setContentsMargins(1, 0, 0, 0)
-        layout.addWidget(self.errorTableWidget)
+        layout.addWidget(self.alarmTableWidget)
         self.setLayout(layout)
         self.setAttribute(Qt.WA_StyledBackground)
 

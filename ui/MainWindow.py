@@ -313,7 +313,7 @@ class MainWindow(QMainWindow):
 
             self.thread.image_Signal.connect(self.videoWidget.handleDisplay)
             self.thread.history_Signal.connect(self.historyWidget.addItem)
-            self.thread.num_Signal.connect(self.alarmWidget.errorTableWidget.changeResult)
+            self.thread.num_Signal.connect(self.alarmWidget.alarmTableWidget.changeResult)
             self.thread.info_Signal.connect(self.showMessage)
             self.thread.gpio_Signal.connect(self.gpio_thread.custom_output)
             self.gpio_thread.flag_Signal.connect(self.thread.callback)
@@ -324,6 +324,11 @@ class MainWindow(QMainWindow):
             self.thread.start()
             self.delete_file_thread.start()
         except Exception as e:
+            # self.thread.cam.release()
+            # self.thread.quit()
+            # self.gpio_thread.quit()
+            # self.delete_file_thread.quit()
+            # self.edge_agent_worker.quit()
             print(e)
 
     def showMessage(self, string):
@@ -345,6 +350,10 @@ class MainWindow(QMainWindow):
         try:
             self.thread.cam.release()
             self.thread.quit()
+            self.gpio_thread.quit()
+            self.delete_file_thread.quit()
+            self.edge_agent_worker.quit()
+
         except Exception as e:
             print(e)
 

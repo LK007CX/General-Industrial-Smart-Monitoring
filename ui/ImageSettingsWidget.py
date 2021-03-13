@@ -104,6 +104,8 @@ class ImageSettingsWidget(QWidget):
 
             maximumstoragequantity = root.find('image').find('maximumstoragequantity').text
             self.maximumStorageQuantitySpinBox.setValue(int(maximumstoragequantity))
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             print(e)
 
@@ -126,6 +128,8 @@ class ImageSettingsWidget(QWidget):
             root.find('image').find('enable').text = "1" if enable else "0"
 
             tree.write(self.config_path)
+        except FileNotFoundError:
+            print("No config file found.")
         except Exception as e:
             print(e)
 
