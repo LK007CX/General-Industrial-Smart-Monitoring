@@ -57,3 +57,6 @@ class GPIOThread(QThread):
 
     def run(self):
         pass
+
+    def __del__(self):
+        GPIO.cleanup()

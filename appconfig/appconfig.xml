@@ -14,8 +14,8 @@
 		<height>720</height>
 	</camera>
 	<input>
-		<mode>level trigger</mode>
-		<inputpin>16</inputpin>
+		<mode>continuous detect</mode>
+		<inputpin>7</inputpin>
 		<triggermode>low pulse</triggermode>
 		<timedelay>190</timedelay>
 		<detecttime>9</detecttime>
@@ -54,9 +54,9 @@
 		<temp>leave this node alone...</temp>
 		<item>
 			<category>chair</category>
-			<frames>1</frames>
-			<thresh>0.1</thresh>
-			<pin>13</pin>
+			<frames>30</frames>
+			<thresh>0.49999999999999994</thresh>
+			<pin>15</pin>
 			<time>0.05</time>
 			<mode>0</mode>
 		</item>

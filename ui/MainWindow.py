@@ -324,11 +324,11 @@ class MainWindow(QMainWindow):
             self.thread.start()
             self.delete_file_thread.start()
         except Exception as e:
-            # self.thread.cam.release()
-            # self.thread.quit()
-            # self.gpio_thread.quit()
-            # self.delete_file_thread.quit()
-            # self.edge_agent_worker.quit()
+            self.thread.cam.release()
+            self.thread.quit()
+            self.gpio_thread.quit()
+            self.delete_file_thread.quit()
+            self.edge_agent_worker.quit()
             print(e)
 
     def showMessage(self, string):

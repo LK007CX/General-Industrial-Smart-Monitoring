@@ -63,7 +63,7 @@ class HistoryListView(QWidget):
         :param time_: time
         :return:
         """
-        print("添加历史记录")
+        # print("添加历史记录")
         if self.historyListView.model().rowCount() == 10:
             self.historyListView.model().removeRow(9)
         times = time.time()

@@ -16,6 +16,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
 # from ui.MainWindow import restart
+# from ui.MainWindow import restart
 from utils.ArgsHelper import ArgsHelper
 from utils.Item import Item
 from utils.ModelOutputItem import ModelOutputItem
@@ -39,6 +40,17 @@ from optparse import OptionParser
 _width = '1280'
 _height = '720'
 global_image = np.ndarray(())
+
+def restart(twice):
+    """
+    Restart the PyQt Application.
+    :param twice:
+    :return: None
+    """
+    os.execl(sys.executable, sys.executable, *[sys.argv[0], "-t", twice])
+
+
+
 
 
 class SensorFactory(GstRtspServer.RTSPMediaFactory):
@@ -136,6 +148,18 @@ class DetectTensorRT(QThread):
         """
         self.gpio_flag = boolean
 
+    def release_and_restart(self):
+        self.cam.release()
+        time.sleep(1)
+        """program restart section"""
+        parser = OptionParser(usage="usage:%prog [optinos] filepath")
+        parser.add_option("-t", "--twice", type="int",
+                          dest="twice", default=1, help="运行次数")
+        options, _ = parser.parse_args()
+        cgitb.enable(1, None, 5, '')
+
+        restart(str(options.twice + 1))
+
     def callback(self):
         """
         GPIO callback.
@@ -225,6 +249,7 @@ class DetectTensorRT(QThread):
         :param conf:
         :return: None
         """
+        # print("输出输出输出")
         self.history_Signal.emit(history_image, label, current_time, str(box))
         self.num_Signal.emit(label)
         self.info_Signal.emit(str(box) + '\t' + str(conf) + '\t' + str(label))
@@ -240,15 +265,8 @@ class DetectTensorRT(QThread):
             raise SystemExit('ERROR: file (model/%s.trt) not found!' % self.args.model)
         self.cam = Camera(self.args)
         if not self.cam.isOpened():
-            """program restart section"""
-            parser = OptionParser(usage="usage:%prog [optinos] filepath")
-            parser.add_option("-t", "--twice", type="int",
-                              dest="twice", default=1, help="运行次数")
-            options, _ = parser.parse_args()
-            cgitb.enable(1, None, 5, '')
-
-            restart(str(options.twice + 1))
-            # raise SystemExit('ERROR: failed to open camera!')
+            self.release_and_restart()
+            #raise SystemExit('ERROR: failed to open camera!')
 
         self.cls_dict = get_cls_dict(self.args.labelsfile)
         yolo_dim = self.args.yolo_dim.split('*')[-1]
@@ -271,7 +289,7 @@ class DetectTensorRT(QThread):
         while True:
             img = self.cam.read()
             if img is None:
-                break
+                self.release_and_restart()
             # if img is None:
             #     self.cam = None
             #     self.cam = Camera(self.args)
@@ -298,7 +316,10 @@ class DetectTensorRT(QThread):
                 box = modelOutputItem.box
                 conf = modelOutputItem.confidence
                 cls = modelOutputItem.cls
+                # print(label)
+                # print(self.item_dict.keys())
                 if label in self.item_dict.keys():  # 检测出来的标签
+
                     # 持续检测模式
                     if self.args.detect_mode == "continuous detect":
                         # 在此假设检测标签不重复（事实上也是如此），模型输出标签可以重复
