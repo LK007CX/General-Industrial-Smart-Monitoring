@@ -55,8 +55,32 @@
 		<item>
 			<category>chair</category>
 			<frames>30</frames>
-			<thresh>0.49999999999999994</thresh>
+			<thresh>0.5</thresh>
 			<pin>15</pin>
+			<time>0.05</time>
+			<mode>0</mode>
+		</item>
+		<item>
+			<category>cow</category>
+			<frames>1</frames>
+			<thresh>0.1</thresh>
+			<pin>16</pin>
+			<time>0.05</time>
+			<mode>0</mode>
+		</item>
+		<item>
+			<category>backpack</category>
+			<frames>1</frames>
+			<thresh>0.1</thresh>
+			<pin>18</pin>
+			<time>0.05</time>
+			<mode>0</mode>
+		</item>
+		<item>
+			<category>umbrella</category>
+			<frames>1</frames>
+			<thresh>0.1</thresh>
+			<pin>19</pin>
 			<time>0.05</time>
 			<mode>0</mode>
 		</item>
