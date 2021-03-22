@@ -54,10 +54,10 @@
 		<temp>leave this node alone...</temp>
 		<item>
 			<category>chair</category>
-			<frames>1</frames>
+			<frames>30</frames>
 			<thresh>0.5</thresh>
 			<pin>15</pin>
-			<time>0.5</time>
+			<time>0.2</time>
 			<mode>1</mode>
 		</item>
 	</detect_items>

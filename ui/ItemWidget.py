@@ -68,7 +68,7 @@ class ItemWidget(QWidget):
         self.threshDoubleSpinBox.setMaximum(1.0)
         self.threshDoubleSpinBox.setSingleStep(0.05)
         self.outputTimeDoubleSpinBox.setMinimum(0.05)
-        self.outputTimeDoubleSpinBox.setMaximum(0.5)
+        self.outputTimeDoubleSpinBox.setMaximum(0.2)
         self.outputTimeDoubleSpinBox.setSingleStep(0.05)
         """layout"""
         layout = QHBoxLayout()
