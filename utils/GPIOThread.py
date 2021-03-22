@@ -18,10 +18,9 @@ class GPIOThread(QThread):
         self.args = args
         self.item_list = args.item_list
         self.init_GPIO()
-        self.mutex = QMutex()
-        self.cond = QWaitCondition()
+        self._mutex = QMutex()
 
-        self.index = 0
+        # self.index = 0
 
     def init_GPIO(self):
         """
@@ -51,31 +50,31 @@ class GPIOThread(QThread):
         self.flag_Signal.emit()
 
     def custom_output(self, item):
-        self.mutex.lock()
+        self._mutex.lock()
         if item.mode == 1:
-            print(str(self.index) + " " + str(item.time))
-            print(str(self.index) + " " + str(datetime.datetime.now()) + " high")
-            print(str(self.index) + " " +str(GPIO.input(item.pin)))
+            # print(str(self.index) + " " + str(item.time))
+            # print(str(self.index) + " " + str(datetime.datetime.now()) + " high")
+            # print(str(self.index) + " " +str(GPIO.input(item.pin)))
             GPIO.output(item.pin, GPIO.HIGH)
-            print(str(self.index) + " " +str(GPIO.input(item.pin)))
+            # print(str(self.index) + " " +str(GPIO.input(item.pin)))
 
             time.sleep(item.time)
             GPIO.output(item.pin, GPIO.LOW)
-            print(str(self.index) + " " +str(GPIO.input(item.pin)))
-            print(str(self.index) + " " + str(datetime.datetime.now()) + " high end\n")
+            # print(str(self.index) + " " +str(GPIO.input(item.pin)))
+            # print(str(self.index) + " " + str(datetime.datetime.now()) + " high end\n")
             self.index += 1
         else:
-            print(str(self.index) + " " + str(item.time))
-            print(str(self.index) + " " +str(datetime.datetime().now) + " low")
-            print(str(self.index) + " " +str(GPIO.input(item.pin)))
+            # print(str(self.index) + " " + str(item.time))
+            # print(str(self.index) + " " +str(datetime.datetime().now) + " low")
+            # print(str(self.index) + " " +str(GPIO.input(item.pin)))
             GPIO.output(item.pin, GPIO.LOW)
-            t(str(self.index) + " " +str(GPIO.input(item.pin)))
+            # print(str(self.index) + " " +str(GPIO.input(item.pin)))
             time.sleep(item.time)
             GPIO.output(item.pin, GPIO.HIGH)
-            print(str(self.index) + " " +str(GPIO.input(item.pin)))
-            print(str(self.index) + " " +str(datetime.datetime().now) + " low end\n")
+            # print(str(self.index) + " " +str(GPIO.input(item.pin)))
+            # print(str(self.index) + " " +str(datetime.datetime().now) + " low end\n")
             self.index += 1
-        self.mutex.unlock()
+        self._mutex.unlock()
 
     def run(self):
         pass
