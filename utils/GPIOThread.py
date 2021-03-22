@@ -12,11 +12,14 @@ import Jetson.GPIO as GPIO
 class GPIOThread(QThread):
     flag_Signal = pyqtSignal()
 
+    is_alive = False
+
     def __init__(self, args):
         super(GPIOThread, self).__init__()
         self.args = args
         self.item_list = args.item_list
         self.init_GPIO()
+
 
     def init_GPIO(self):
         """
@@ -46,14 +49,25 @@ class GPIOThread(QThread):
         self.flag_Signal.emit()
 
     def custom_output(self, item):
+        if GPIOThread.is_alive:
+            print("正在输出，方法返回")
+            return
+        GPIOThread.is_alive = True
         if item.mode == 1:
+            print(GPIO.input(item.pin))
             GPIO.output(item.pin, GPIO.HIGH)
+            print(GPIO.input(item.pin))
             self.sleep(item.time)
             GPIO.output(item.pin, GPIO.LOW)
+            print(GPIO.input(item.pin))
         else:
+            print(GPIO.input(item.pin))
             GPIO.output(item.pin, GPIO.LOW)
+            print(GPIO.input(item.pin))
             self.sleep(item.time)
             GPIO.output(item.pin, GPIO.HIGH)
+            print(GPIO.input(item.pin))
+        GPIOThread.is_alive = False
 
     def run(self):
         pass
