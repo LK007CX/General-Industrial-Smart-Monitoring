@@ -118,7 +118,7 @@ class DetectTensorRT(QThread):
         self.vis = None
 
         self.item_list = args.item_list
-        self.item_dict = {item.category: item for item in self.item_list}
+        self.item_dict = {item.get_category(): item for item in self.item_list}
 
         self.cls_dict = None
         self.gpio_flag = False
@@ -281,7 +281,7 @@ class DetectTensorRT(QThread):
         self.vis = BBoxVisualization(self.cls_dict)
 
     def loop_and_detect(self):
-        detect_labels = [item.category for item in self.item_list]  # 所有需要检测的标签
+        detect_labels = [item.get_category() for item in self.item_list]  # 所有需要检测的标签
         fps = 0.0
         tic = time.time()
         while True:
@@ -305,15 +305,15 @@ class DetectTensorRT(QThread):
 
             # 转换为ModelOutputItem
             model_output_list = [
-                ModelOutputItem(box=boxes[i], confidence=confs[i], cls=clss[i], cls_dict=self.cls_dict)
+                ModelOutputItem(_box=boxes[i], _confidence=confs[i], _cls=clss[i], _cls_dict=self.cls_dict)
                 for i in range(len(boxes))]
 
             # 在此假设检测标签不重复，模型输出标签可以重复
             for modelOutputItem in model_output_list:
-                label = modelOutputItem.label
-                box = modelOutputItem.box
-                conf = modelOutputItem.confidence
-                cls = modelOutputItem.cls
+                label = modelOutputItem.get_label()
+                box = modelOutputItem.get_box()
+                conf = modelOutputItem.get_confidence()
+                cls = modelOutputItem.get_cls()
                 # print(label)
                 # print(self.item_dict.keys())
                 if label in self.item_dict.keys():  # 检测出来的标签

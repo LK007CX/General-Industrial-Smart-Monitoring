@@ -194,8 +194,8 @@ class MainWindow(QMainWindow):
                 time = float(action.find('time').text)
                 mode = int(action.find('mode').text)
 
-                item = Item(category=category, confirm_frames=confirm_frames, thresh=thresh, pin=pin, time=time,
-                            mode=mode)
+                item = Item(_category=category, _confirm_frames=confirm_frames, _thresh=thresh, _pin=pin, _time=time,
+                            _mode=mode)
                 item_list.append(item)
 
             if camera_mode == 'USB':

@@ -37,3 +37,15 @@ class Item(object):
         :return: None
         """
         self._label_list.clear()
+
+    def get_category(self):
+        return self._category
+
+    def get_mode(self):
+        return self._mode
+
+    def get_pin(self):
+        return self._pin
+
+    def get_time(self):
+        return self._time
