@@ -25,5 +25,3 @@ class ModelOutputItem:
 
     def get_cls(self):
         return self._cls
-
-
