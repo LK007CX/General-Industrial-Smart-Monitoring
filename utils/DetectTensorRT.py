@@ -165,6 +165,8 @@ class DetectTensorRT(QThread):
         """
         if self.args.detect_mode == "continuous detect":
             return
+        if self.gpio_flag:
+            return
         if not self.gpio_flag:
             self.gpio_flag = True
             self.detect_start_time = time.time()

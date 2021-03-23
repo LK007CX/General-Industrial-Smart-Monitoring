@@ -14,7 +14,7 @@
         <height>720</height>
     </camera>
     <input>
-        <mode>continuous detect</mode>
+        <mode>level trigger</mode>
         <inputpin>7</inputpin>
         <triggermode>low pulse</triggermode>
         <timedelay>190</timedelay>
@@ -48,7 +48,7 @@
         <predict_type>0</predict_type>
     </dataupload>
     <remotecv>
-        <enable>0</enable>
+        <enable>1</enable>
     </remotecv>
     <detect_items>
         <temp>leave this node alone...</temp>
