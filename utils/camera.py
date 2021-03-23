@@ -6,10 +6,10 @@ addition, this Camera class is further extended to take a video
 file or an image file as input.
 """
 
+import argparse
 import logging
 import subprocess
 import threading
-import argparse
 
 import cv2
 import numpy as np

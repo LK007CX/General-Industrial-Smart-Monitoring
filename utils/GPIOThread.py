@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 import sys
-
-from PyQt5.QtCore import QThread, pyqtSignal, QMutex, QWaitCondition
-import datetime
 import time
+
+from PyQt5.QtCore import QThread, pyqtSignal, QMutex
+
 sys.path.append('/opt/nvidia/jetson-gpio/lib/python/')
 sys.path.append('/opt/nvidia/jetson-gpio/lib/python/Jetson/GPIO')
 import Jetson.GPIO as GPIO
@@ -35,10 +35,10 @@ class GPIOThread(QThread):
         for item in self.item_list:
 
             if item.mode == 1:
-                print("高脉冲触发" + str(item.pin))
+                print("High pulse output: " + str(item.pin) + ".")
                 GPIO.setup(item.pin, GPIO.OUT, initial=GPIO.LOW)
             else:
-                print("低脉冲触发" + str(item.pin))
+                print("Low pulse output: " + str(item.pin) + ".")
                 GPIO.setup(item.pin, GPIO.OUT, initial=GPIO.HIGH)
 
     def callback(self, input_pin):

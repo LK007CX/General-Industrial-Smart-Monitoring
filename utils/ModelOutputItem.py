@@ -3,12 +3,13 @@
 
 
 class ModelOutputItem:
-    __slots__ = 'box', 'confidence', 'cls', 'label', 'cls_dict'
+    __slots__ = '_box', '_confidence', '_cls', '_label', '_cls_dict'
 
     def __init__(self, *args, **kwargs):
         for k, v in kwargs.items():
             self.__setattr__(k, v)
-        self.label = self.cls_dict[self.cls]
+        self._label = self._cls_dict[self._cls]
 
     def __str__(self):
-        return 'box={%s}\tconfidence={%s}\tcls={%s}\tlabel={%s}\t' % (self.box, self.confidence, self.cls, self.label)
+        return 'box={%s}\tconfidence={%s}\tcls={%s}\tlabel={%s}\t' % \
+               (self._box, self._confidence, self._cls, self._label)

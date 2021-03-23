@@ -41,6 +41,7 @@ _width = '1280'
 _height = '720'
 global_image = np.ndarray(())
 
+
 def restart(twice):
     """
     Restart the PyQt Application.
@@ -48,9 +49,6 @@ def restart(twice):
     :return: None
     """
     os.execl(sys.executable, sys.executable, *[sys.argv[0], "-t", twice])
-
-
-
 
 
 class SensorFactory(GstRtspServer.RTSPMediaFactory):
@@ -72,7 +70,7 @@ class SensorFactory(GstRtspServer.RTSPMediaFactory):
         data = global_image.tostring()
         buf = Gst.Buffer.new_allocate(None, len(data), None)
         buf.fill(0, data)
-        buf.duration = self.duration
+        buf._duration = self.duration
         timestamp = self.number_frames * self.duration
         buf.pts = buf.dts = int(timestamp)
         buf.offset = timestamp
@@ -266,7 +264,7 @@ class DetectTensorRT(QThread):
         self.cam = Camera(self.args)
         if not self.cam.isOpened():
             self.release_and_restart()
-            #raise SystemExit('ERROR: failed to open camera!')
+            # raise SystemExit('ERROR: failed to open camera!')
 
         self.cls_dict = get_cls_dict(self.args.labelsfile)
         yolo_dim = self.args.yolo_dim.split('*')[-1]

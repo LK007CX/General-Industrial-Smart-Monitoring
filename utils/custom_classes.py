@@ -23,8 +23,3 @@ def get_cls_dict(config_path):
     :return: None
     """
     return {i: n for i, n in enumerate(get_names(config_path))}
-
-
-if __name__ == '__main__':
-    result = get_cls_dict('appsettings.ini')
-    print(result)
