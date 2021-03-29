@@ -27,7 +27,7 @@ class InputSettingsWidget(QWidget):
         self.triggerModeComboBox = QComboBox()
         self.timeDelayLabel = QLabel("触发时延(ms)")
         self.timeDelaySpinBox = QSpinBox()
-        self.detectTimeLabel = QLabel("检测时间(ms)")
+        self.detectTimeLabel = QLabel("检测时间(s)")
         self.detectTimeSpinBox = QSpinBox()
         self.savePushButton = QPushButton("保存")
         self.spacer = QLabel()
