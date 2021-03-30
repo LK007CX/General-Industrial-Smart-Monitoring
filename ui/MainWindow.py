@@ -353,9 +353,10 @@ class MainWindow(QMainWindow):
             self.gpio_thread.quit()
             self.delete_file_thread.quit()
             self.edge_agent_worker.quit()
-
         except Exception as e:
             print(e)
+        # finally:
+        #     sys.exit(0)
 
     def restartApplication(self):
         """

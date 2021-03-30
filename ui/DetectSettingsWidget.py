@@ -134,7 +134,7 @@ class DetectSettingsWidget(QWidget):
                 frames = str(widget.confirmFramesSpinBox.value())
                 thresh = str(widget.threshDoubleSpinBox.value())
                 pin = str(widget.outputPinComboBox.currentText())
-                time = str(widget.outputTimeDoubleSpinBox.value())
+                time = str(round(widget.outputTimeDoubleSpinBox.value(), 2))
                 mode = str(widget.outputModeComboBox.currentText())
 
                 action = ET.Element('item')

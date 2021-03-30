@@ -3,7 +3,7 @@
 import datetime
 import sys
 import time
-
+import threading
 from PyQt5.QtCore import QThread, pyqtSignal, QMutex, QTimer
 
 sys.path.append('/opt/nvidia/jetson-gpio/lib/python/')
@@ -20,6 +20,8 @@ class GPIOThread(QThread):
         self.item_list = args.item_list
         self.init_GPIO()
         self._mutex = QMutex()
+
+        self._lock = threading.RLock()
 
         self.index = 0
 
@@ -50,7 +52,8 @@ class GPIOThread(QThread):
         """
         self.flag_Signal.emit()
 
-    def custom_output(self, item):
+    """This function is abandoned."""
+    def __custom_output(self, item):
         self._mutex.lock()
         if item.get_mode() == 1:
             # print(str(self.index) + " " + str(item.time))
@@ -76,39 +79,41 @@ class GPIOThread(QThread):
             # print(str(self.index) + " " +str(datetime.datetime().now) + " low end\n")
             # self.index += 1
         self._mutex.unlock()
-    #
-    # QTimer.singleShot(400, lambda: (splashScreen.progressBar.setValue(100),
-    #                                 splashScreen.progressBarStatusLabel.setText("(5/5)加载完毕"),
-    #                                 splashScreen.finish(app.w),
-    #                                 app.setStyleSheet(mainWindowStyle),
-    #                                 app.w.show()))
 
-    # def custom_output(self, item):
-    #     self._mutex.lock()
-    #     if item.get_mode() == 1:
-    #         print(str(self.index) + " " + str(item.get_time()))
-    #         print(str(self.index) + " " + str(datetime.datetime.now()) + " high")
-    #         print(str(self.index) + " " +str(GPIO.input(item.get_pin())))
-    #         GPIO.output(item.get_pin(), GPIO.HIGH)
-    #         print(str(self.index) + " " +str(GPIO.input(item.get_pin())))
-    #
-    #         QTimer.singleShot(400, lambda: (GPIO.output(item.get_pin(), GPIO.LOW)))
-    #
-    #         print(str(self.index) + " " +str(GPIO.input(item.get_pin())))
-    #         print(str(self.index) + " " + str(datetime.datetime.now()) + " high end\n")
-    #         self.index += 1
-    #     else:
-    #         print(str(self.index) + " " + str(item.get_time()))
-    #         print(str(self.index) + " " +str(datetime.datetime().now) + " low")
-    #         print(str(self.index) + " " +str(GPIO.input(item.get_pin())))
-    #         GPIO.output(item.get_pin(), GPIO.LOW)
-    #         print(str(self.index) + " " +str(GPIO.input(item.get_pin())))
-    #         time.sleep(item.get_time())
-    #         QTimer.singleShot(400, lambda: (GPIO.output(item.get_pin(), GPIO.HIGH)))
-    #         print(str(self.index) + " " +str(GPIO.input(item.get_pin())))
-    #         print(str(self.index) + " " +str(datetime.datetime().now) + " low end\n")
-    #         self.index += 1
-    #     self._mutex.unlock()
+    def output(self, item):
+        self._lock.acquire()  # acquire the lock
+        pre = time.time()
+        try:
+            print(str(self.index) + " " + "output mode: " + str(item.get_mode()) + " " + "output pin: " +
+                  str(item.get_pin()) + " " + "output time: " + str(item.get_time()))
+            if item.get_mode() == 1:
+                print(str(self.index) + " " + str(datetime.datetime.now()) + " " + str(GPIO.input(item.get_pin())))
+                GPIO.output(item.get_pin(), GPIO.HIGH)
+            else:
+                print(str(self.index) + " " + str(datetime.datetime.now()) + " " + str(GPIO.input(item.get_pin())))
+                GPIO.output(item.get_pin(), GPIO.LOW)
+            # replace the time.sleep()
+            while True:
+                if time.time() - pre > item.get_time():
+                    break
+            if item.get_mode() == 1:
+                print(str(self.index) + " " + str(datetime.datetime.now()) + " " + str(GPIO.input(item.get_pin())))
+                GPIO.output(item.get_pin(), GPIO.LOW)
+                print(str(self.index) + " " + str(datetime.datetime.now()) + " " + str(GPIO.input(item.get_pin())))
+                self.index += 1
+            else:
+                print(str(self.index) + " " + str(datetime.datetime.now()) + " " + str(GPIO.input(item.get_pin())))
+                GPIO.output(item.get_pin(), GPIO.HIGH)
+                print(str(self.index) + " " + str(datetime.datetime.now()) + " " + str(GPIO.input(item.get_pin())))
+                self.index += 1
+            print()
+        finally:
+            pass
+            self._lock.release()  # release the lock
+
+    def custom_output(self, item):
+        # prevent thread blocking the program
+        threading.Thread(target=self.output, args=(item, )).start()
 
     def run(self):
         pass

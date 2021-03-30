@@ -1,6 +1,3 @@
-import time
+import datetime
 
-temp = 1
-while 1:
-    temp = -temp
-    time.sleep(1)
+print(datetime.datetime.now())

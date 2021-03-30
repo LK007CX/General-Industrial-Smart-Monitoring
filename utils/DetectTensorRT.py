@@ -149,7 +149,7 @@ class DetectTensorRT(QThread):
     def release_and_restart(self):
         self.cam.release()
         time.sleep(1)
-        """program restart section"""
+        """restart the application section"""
         parser = OptionParser(usage="usage:%prog [optinos] filepath")
         parser.add_option("-t", "--twice", type="int",
                           dest="twice", default=1, help="运行次数")
@@ -290,11 +290,6 @@ class DetectTensorRT(QThread):
             img = self.cam.read()
             if img is None:
                 self.release_and_restart()
-            # if img is None:
-            #     self.cam = None
-            #     self.cam = Camera(self.args)
-            #     if not self.cam.isOpened():
-            #         print('ERROR: failed to open camera!')
             boxes, confs, clss = self.trt_yolo.detect(img, self.conf_th)  # 模型输出结果
 
             # 过滤标签
@@ -353,10 +348,9 @@ class DetectTensorRT(QThread):
                 global_image = copy.deepcopy(img)
             toc = time.time()
             curr_fps = 1.0 / (toc - tic)
-            # 计算fps数的指数衰减平均值
+            # calculate the average value of exponential decay of FPS number
             fps = curr_fps if fps == 0.0 else (fps * 0.95 + curr_fps * 0.05)
             tic = toc
-            # time.sleep(0.005)
 
     def run(self):
         try:
