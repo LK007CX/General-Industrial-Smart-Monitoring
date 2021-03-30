@@ -2,8 +2,9 @@
 # -*- coding: UTF-8 -*-
 import datetime
 import sys
-import time
 import threading
+import time
+
 from PyQt5.QtCore import QThread, pyqtSignal, QMutex, QTimer
 
 sys.path.append('/opt/nvidia/jetson-gpio/lib/python/')
@@ -53,6 +54,7 @@ class GPIOThread(QThread):
         self.flag_Signal.emit()
 
     """This function is abandoned."""
+
     def __custom_output(self, item):
         self._mutex.lock()
         if item.get_mode() == 1:
@@ -113,7 +115,7 @@ class GPIOThread(QThread):
 
     def custom_output(self, item):
         # prevent thread blocking the program
-        threading.Thread(target=self.output, args=(item, )).start()
+        threading.Thread(target=self.output, args=(item,)).start()
 
     def run(self):
         pass

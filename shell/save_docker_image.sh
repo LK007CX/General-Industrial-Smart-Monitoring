@@ -1,0 +1,1 @@
+docker save -o gism-v1.0.img gism-dev:v1.0
