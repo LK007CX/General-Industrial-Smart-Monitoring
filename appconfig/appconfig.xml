@@ -26,7 +26,7 @@
         <maximumstoragequantity>100</maximumstoragequantity>
     </image>
     <dataupload>
-        <enable>0</enable>
+        <enable>1</enable>
         <server_address>http://10.6.114.69:5001</server_address>
         <host_name>fe80::5835:7acf:8ebc:b7b3%71</host_name>
         <conn_timeout>0.1</conn_timeout>
@@ -34,7 +34,7 @@
         <project_id>1501</project_id>
         <project_name>Nano</project_name>
         <image_file_suffix>jpg</image_file_suffix>
-        <site>S02</site>
+        <site>S01</site>
         <line_id>line_id</line_id>
         <eqp_id>R</eqp_id>
         <station_id>station_id</station_id>
@@ -44,7 +44,7 @@
         <model_version>V1.0</model_version>
         <model_iteration>20000</model_iteration>
         <model_labels>person,ok,ng</model_labels>
-        <model_type>1</model_type>
+        <model_type>3</model_type>
         <predict_type>0</predict_type>
     </dataupload>
     <remotecv>
